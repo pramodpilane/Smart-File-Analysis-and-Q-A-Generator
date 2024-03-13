@@ -4,6 +4,7 @@ import Header from './Header&Footer/Header';
 import Module2 from './Module2/Module2';
 import Module3 from './Module3/Module3';
 import Footer from './Header&Footer/Footer';
+import Home from './components/upload_file';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 function App() {
