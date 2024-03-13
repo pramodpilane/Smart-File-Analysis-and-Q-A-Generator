@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import {
   Button,
@@ -56,7 +57,11 @@ const SubmitButton = styled(Button)(({ theme }) => ({
 export default function Upload_file() {
   const [dense, setDense] = useState(false);
   const [secondary, setSecondary] = useState(false);
+  const navigate = useNavigate();
  
+  const uploadFile = () => {
+      navigate(`/prompt`);
+  }
 
   const styles = {
     icon: {
@@ -155,7 +160,7 @@ export default function Upload_file() {
         </Grid>
 
         {/* Submit bttn */}
-        <SubmitButton size = "large" variant="contained">SUBMIT</SubmitButton>
+        <SubmitButton size = "large" variant="contained" onClick={uploadFile}>SUBMIT</SubmitButton>
       </Grid>
     </>
   );

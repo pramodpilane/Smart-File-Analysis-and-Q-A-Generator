@@ -11,10 +11,12 @@ import Alert from '@mui/material/Alert';
 
 
 const Module2 = () => {
+    // State variables for the input field and error handling
     const [question, setQuestion] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    // Styled component for the suggestion items
     const Item = styled(Paper)(({ theme }) => ({
         ...theme.typography.body2,
         textAlign: 'center',
@@ -24,8 +26,10 @@ const Module2 = () => {
         cursor: "pointer"
     }));
 
+    // Theme for the light mode
     const lightTheme = createTheme({ palette: { mode: 'light' } });
 
+    // Styles for the container
     const myStyle = {
         display: "flex",
         flexDirection: "column",
@@ -35,6 +39,7 @@ const Module2 = () => {
         marginTop: 25
     }
 
+    // Function to handle submission of question
     const submitQuestion = () => {
         if (!question.trim()) {
             setError('please enter a question before proceeding');
@@ -44,13 +49,17 @@ const Module2 = () => {
         }
     }
 
+    // Function to submit a suggestion
     const submitSuggestion = (q) => {
         navigate(`/solution/${q}`);
     }
 
     return (
         <div style={myStyle}>
+            {/* Header */}
             <h2>HOW CAN I HELP YOU TODAY?</h2>
+
+            {/* Input field for user prompt */}
             <Grid sx={{
                 width: 900,
                 maxWidth: '100%',
@@ -58,14 +67,20 @@ const Module2 = () => {
                 flexDirection: "row",
             }}>
                 <TextField placeholder='ENTER PROMPT' fullWidth id="fullWidth" focused value={question} onChange={(e) => {setQuestion(e.target.value); setError("");}} />
+                {/* Button to submit question */}
                 <Button variant="contained" onClick={submitQuestion}><SendIcon /></Button>
             </Grid><br />
+
+            {/* Display error if input field is empty & submit button is clicked */}
             {error && <Alert severity="error">
                 <strong>ERROR: </strong>{error}
             </Alert>}
             <br />
+
+            {/* Suggestions grid */}
             <Grid container display="flex" justifyContent="center" spacing={2}>
                 <Grid item xs={8}>
+                    {/* Theme provider for light mode */}
                     <ThemeProvider theme={lightTheme}>
                         <Box
                             sx={{
@@ -77,6 +92,7 @@ const Module2 = () => {
                                 gap: 8,
                             }}
                         >
+                            {/* Suggestions */}
                             <Item elevation={10} onClick={() => submitSuggestion("SUGGESTION 1")}>
                                 <b>SUGGESTION 1</b>
                             </Item>
