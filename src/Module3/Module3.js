@@ -6,8 +6,10 @@ import {Button} from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 
 const Module3 = () => {
+    // Extracting the question parameter from the URL using useParams hook
     const {question} = useParams();
 
+    // Styles for the container
     const myStyle = {
         display: "flex",
         flexDirection: "column",
@@ -18,6 +20,7 @@ const Module3 = () => {
 
     return (
         <div style={myStyle}>
+            {/* Input field for user prompt */}
             <Grid sx={{
                 width: 1000,
                 maxWidth: '100%',
@@ -25,9 +28,11 @@ const Module3 = () => {
                 flexDirection: "row",
             }}>
                 <TextField placeholder='ENTER PROMPT' defaultValue={question} fullWidth id="fullWidth" focused />
+                {/* Button to submit question */}
                 <Button variant="contained"><SendIcon /></Button>
             </Grid>
-            <Grid sx={{
+        {/* Textarea to see the retrieved answer */}
+        <Grid sx={{
                 width: 1000,
                 maxWidth: '100%',
                 margin:1
