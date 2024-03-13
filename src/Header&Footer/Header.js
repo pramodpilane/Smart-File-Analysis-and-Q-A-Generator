@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import logo1 from '../OIG4.jpeg'
+import logo1 from '../assets/images/OIG4.jpeg'
 import Badge from '@mui/joy/Badge';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
