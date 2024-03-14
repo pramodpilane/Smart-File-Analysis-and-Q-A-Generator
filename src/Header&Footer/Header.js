@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import { useNavigate, Link } from "react-router-dom";
 import logo1 from '../assets/images/OIG4.jpeg'
 import Badge from '@mui/joy/Badge';
 import Box from '@mui/joy/Box';
@@ -10,7 +10,10 @@ import Typography from '@mui/material/Typography';
 
 
 const Header = ({color,setColor}) => {
-   
+  const navigate = useNavigate();
+  const about = () => {
+      navigate(`/about`);
+  }
 
     return (
       <Sheet
@@ -29,7 +32,7 @@ const Header = ({color,setColor}) => {
         }}
       >
 
-        <img src={logo1} alt="logo" style={{ height: "80px", width: "90px", cursor: "pointer" }}/>
+      <Link to="/about"><img src={logo1} alt="logo" style={{ height: "80px", width: "90px", cursor: "pointer" }}/></Link>
           
         <Box sx={{ flex: 1, display: 'flex', px: 2, cursor: "pointer" }}>
             <Typography variant="h4" component="div">

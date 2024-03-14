@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import {
@@ -55,8 +55,9 @@ const SubmitButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function Upload_file() {
-  const [dense, setDense] = useState(false);
-  const [secondary, setSecondary] = useState(false);
+  // const [dense, setDense] = useState(false);
+  // const [secondary, setSecondary] = useState(false);
+  const dense = false;
   const navigate = useNavigate();
  
   const uploadFile = () => {
