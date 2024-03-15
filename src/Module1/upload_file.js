@@ -1,4 +1,5 @@
 import React from "react";
+import logo1 from '../assets/images/OIG4.jpeg'
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import {
@@ -30,15 +31,6 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-
-function generate(element) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    })
-  );
-}
-
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   width: "40em"
@@ -54,24 +46,30 @@ const SubmitButton = styled(Button)(({ theme }) => ({
   
 }));
 
-export default function Upload_file() {
-  // const [dense, setDense] = useState(false);
-  // const [secondary, setSecondary] = useState(false);
+export default function Upload_file({selectedFiles, setSelectedFiles}) {
   const dense = false;
   const navigate = useNavigate();
  
-  const uploadFile = () => {
-      navigate(`/prompt`);
-  }
+  const uploadFile = async(e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    selectedFiles.forEach((file) => {
+      formData.append('files', file);
+    });
+
+    await fetch("http://localhost:8000/upload", {
+        method: 'POST',
+        body: formData,
+      });
+
+    navigate(`/prompt`);
+   }
 
   const styles = {
     icon: {
        fontsize: 70,
        color: "red"
-      //padding: '12px 0px',
-      // '&:hover': {
-      //   backgroundColor: 'darkblue',
-      // },
     },
 
     button: {
@@ -83,6 +81,17 @@ export default function Upload_file() {
     },
   };
 
+  const uploadHandler = (e) => {
+    const files = Array.from(e.target.files);
+    setSelectedFiles([...selectedFiles, ...files]);
+  };
+
+  const deleteFile = (filename) => {
+    setSelectedFiles(selectedFiles.filter(file => file.name !== filename))
+}
+
+  const hasFiles = selectedFiles && selectedFiles.length > 0;
+
   return (
     <>
       <Grid
@@ -91,8 +100,9 @@ export default function Upload_file() {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        sx={{ minHeight: "100vh" }}
+        sx={{ minHeight: "70vh"}}
       >
+        {!hasFiles && <img src={logo1} alt="logo" style={{ height: "200px", width: "200px", cursor: "pointer" }}/>}
         <Grid item xs={3}>
           <Typography variant="h3" component="h2">
             <strong>SMART FILE ANALYSIS</strong>
@@ -120,8 +130,8 @@ export default function Upload_file() {
                 tabIndex={-1}
                 startIcon={<CloudUploadIcon />}
               >
-               <strong> UPLOAD</strong>
-                <VisuallyHiddenInput type="file" />
+                <strong> UPLOAD</strong>
+                <VisuallyHiddenInput type="file" multiple accept=".pdf, .docx" onChange={uploadHandler}/>
               </Button>
               <Typography variant="h6" >Supported Files</Typography>
               <Typography variant="body2" gutterBottom>PDF, DOCX</Typography>
@@ -129,18 +139,18 @@ export default function Upload_file() {
           </Paper>
         </Grid>
         {/* table */}
+        {!hasFiles && (<strong style={{textAlign:"center"}}>NOTE: please select a file to proceed further</strong>)}
         <Grid item xs={12} md={7}>
           <Typography sx={{ mt: 8, mb: 1 }} variant="h6" component="div">
-            UPLOADED FILES
+            {hasFiles && (<>UPLOADED FILES</>)}
           </Typography>
           <Demo>
-            <List dense={dense}
-                
-            >
-              {generate(
+            <List dense={dense}>
+              {hasFiles &&
+                    selectedFiles.map((f) => (
                 <ListItem 
                   secondaryAction={
-                    <IconButton  color="error" size="large" edge="end" aria-label="delete">
+                    <IconButton  color="error" size="large" edge="end" aria-label="delete" onClick={() => deleteFile(f.name)}>
                       <DeleteIcon />
                     </IconButton>
                   }
@@ -151,17 +161,16 @@ export default function Upload_file() {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary="Document.pdf"
-                    secondary="30 MB"
+                    primary={f.name}
                   />
                 </ListItem>
-              )}
+              ))}
             </List>
           </Demo>
         </Grid>
 
         {/* Submit bttn */}
-        <SubmitButton size = "large" variant="contained" onClick={uploadFile}>SUBMIT</SubmitButton>
+        {hasFiles && (<SubmitButton size = "large" variant="contained" onClick={uploadFile}>SUBMIT</SubmitButton>)}       
       </Grid>
     </>
   );
