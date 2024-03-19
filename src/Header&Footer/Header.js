@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo1 from '../assets/images/OIG4.jpeg'
 import Badge from '@mui/joy/Badge';
 import Box from '@mui/joy/Box';
@@ -10,10 +10,6 @@ import Typography from '@mui/material/Typography';
 
 
 const Header = ({color,setColor}) => {
-  const navigate = useNavigate();
-  const about = () => {
-      navigate(`/about`);
-  }
 
     return (
       <Sheet

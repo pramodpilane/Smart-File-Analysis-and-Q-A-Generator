@@ -21,9 +21,11 @@ const Footer = ({color}) => {
         }),
         flexGrow: 1,
         p: 0.5,
-        position:"fixed",
+        //position:"sticky",
         bottom:0,
-        width:"99.5%"
+        width: "100%", // Set width to 100% of viewport width
+        padding: "8px 0px", // Adjust padding as needed
+        margin: '0px'
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0 }}>
