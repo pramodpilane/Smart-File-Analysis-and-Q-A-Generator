@@ -43,6 +43,7 @@ const Module2 = () => {
     const submitQuestion = async (e) => {
         if (!question.trim()) {
             setError('please enter a question before proceeding');
+            setAnswer("");
         }
         else {
             e.preventDefault();
@@ -125,7 +126,7 @@ const Module2 = () => {
                 margin:1,
                 marginBottom:"auto"
             }}>
-                {hasAns && <TextField minRows={14} disabled value={answer} fullWidth multiline id="fullWidth" />}
+                {hasAns && <TextField minRows={14} value={answer} fullWidth multiline id="fullWidth" />}
             </Grid>           
         </div>
     )
