@@ -27,15 +27,30 @@ export default function About(props) {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 3000,
     waitForAnimate: false,
+    adaptiveHeight: false
   };
 
   //styles for adding padding, margin, bgcolor to sections.
   const styles = {
     slider: {
-      marginTop: '20px', 
-      marginBottom: '40px'
+      marginTop: '0px', 
+      marginBottom: '40px',
+      '.slick-slide': {
+        height: 'auto !important'
+      },
+      '.slick-track': {
+        display: 'flex !important',
+        flexDirection: 'row !important',
+        flexWrap: 'nowrap !important',
+        alignItems: 'stretch !important'
+      },
+      '.slick-slide > div': {
+        width: "100%", 
+        height: '100%', 
+        'object-fit':'fit' 
+      }
     },
 
     cards: {
@@ -48,54 +63,71 @@ export default function About(props) {
     para: {
       marginTop: '90px', 
       marginBottom: '80px',
-      padding: '80px 50px',
+      padding: '80px' ,
       textAlign: 'justify',
       'background-color': '#F7F8F7',
     },
+
+    image: {
+      width: "100%", height: '100%', 'object-fit':'fit'
+    }
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth="false" disableGutters sx={{ m: 0, p: 0 }}>
 
-      {/* Heading - Welcome */}
-      <Typography variant="h2" gutterBottom sx={{ textAlign: "center", mb: 4 }}>
-        Welcome to StudyGenius
-      </Typography>
+  
+    
 
       {/* Slider images */}
       <div style={styles.slider}>
       <Slider {...settings}>
         <div>
-          <img src={banner1} alt="Banner 1" style={{ width: "100%" }} />
+          <img src={banner1} alt="Banner 1" style={styles.image} />
         </div>
         <div>
-          <img src={banner2} alt="Banner 2" style={{ width: "100%" }} />
+          <img src={banner2} alt="Banner 2" style={styles.image} />
         </div>
       </Slider>
+      <br />
       </div>
 
-      {/* About paragraph */}
+      {/* About paragraph */} 
       <Typography style={styles.para} variant="body1" gutterBottom>
+      <Typography variant="h3" gutterBottom sx={{ textAlign: "center", mb: 4 }}>
+      Welcome to Study Genius
+      </Typography>
+      <Typography variant="h5" gutterBottom sx={{ textAlign: "center", mb: 4 }}>
+      Your Ultimate Study Companion
+      </Typography><br />
+      <p>
+      In today's dynamic educational landscape, students often face challenges in navigating through extensive study materials. 
+      The abundance of resources, ranging from textbooks to online materials, can be overwhelming to manage effectively. 
+      Additionally, students may struggle with retaining and understanding key concepts from their studies, 
+      impacting their academic performance.
+      </p><br /><p>
         StudyGenius is the ultimate tool for enhancing your learning experience.
         Our specialized question-and-answer generator is tailored for study
         materials, aimed at making learning, teaching, and research more
         efficient and enjoyable.
+        </p>
       </Typography>
 
-      {/* 3 Cards */}
+      {/*how it works? */}
       <Box container style={styles.cards}>
         <Typography variant="h3" gutterBottom sx={{ textAlign: "center", mb: 4 }}>
-        About Cards
-      </Typography>
+        How It Works
+      </Typography><br /><br />
       <Grid
         container
         direction="row"
         justifyContent="space-evenly"
         alignItems="stretch"
+        sx={{ height: '100%' }}
         
       >
-        <Grid item xs={3}>
-          <Card sx={{ maxWidth: 345 }}>
+        <Grid item xs={'auto'}>
+          <Card sx={{ maxWidth: 345, height: '100%'}}>
             <CardActionArea>
               <CardMedia
                 component="img"
@@ -103,20 +135,19 @@ export default function About(props) {
                 image={banner1}
                 alt="green iguana"
               />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Lizard
+              <CardContent sx={{ height: '100%' }}>
+                <Typography gutterBottom variant="h6" component="div">
+                Upload Your Study Materials
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
+                Begin by uploading your study materials, whether it's textbooks, lecture notes, or research articles.
                 </Typography>
               </CardContent>
             </CardActionArea>
           </Card>
         </Grid>
-        <Grid item xs={3}>
-          <Card sx={{ maxWidth: 345 }}>
+        <Grid item xs={'auto'}>
+        <Card sx={{ maxWidth: 345, height: '100%'}}>
             <CardActionArea>
               <CardMedia
                 component="img"
@@ -124,20 +155,19 @@ export default function About(props) {
                 image={banner1}
                 alt="green iguana"
               />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Lizard
+              <CardContent sx={{ height: '100%' }}>
+                <Typography gutterBottom variant="h6" component="div">
+                Input Your Questions or Choose from Suggestions
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
+                Next, input your questions directly or select from our suggestions.
                 </Typography>
               </CardContent>
             </CardActionArea>
           </Card>
         </Grid>
-        <Grid item xs={3}>
-          <Card sx={{ maxWidth: 345 }}>
+        <Grid item xs={'auto'}>
+        <Card sx={{ maxWidth: 345, height: '100%'}}>
             <CardActionArea>
               <CardMedia
                 component="img"
@@ -145,13 +175,32 @@ export default function About(props) {
                 image={banner1}
                 alt="green iguana"
               />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Lizard
+              <CardContent sx={{ height: '100%' }}>
+                <Typography gutterBottom variant="h6" component="div">
+                Generate Personalized Content
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
+                Our advanced algorithms analyze your inputs to generate tailored quizzes, summaries, and explanations.
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+        <Grid item xs={'auto'}>
+        <Card sx={{ maxWidth: 345, height: '100%'}}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="140"
+                image={banner1}
+                alt="green iguana"
+              />
+              <CardContent sx={{ height: '100%' }}>
+                <Typography gutterBottom variant="h6" component="div">
+                Enhance Your Learning Experience
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                Dive into your customized content to elevate your self-study, revision, exam prep, or lesson planning efforts.
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -160,21 +209,77 @@ export default function About(props) {
       </Grid>
       </Box>
 
+      {/* supporting learning */}
+      <Box container style={styles.cards}>
+        <Typography variant="h3" gutterBottom sx={{ textAlign: "center", mb: 4 }}>
+        Supports Your Learning Environment
+      </Typography>
+      <br />
+      <Grid
+       container
+       direction="row"
+       justifyContent="space-evenly"
+       alignItems="stretch"
+       sx={{ height: '100%' }}
+      >
+        <Grid item xs={3}>
+        <Card sx={{ minWidth: 275 }}>
+      <CardContent>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        Browser Compatibility
+        </Typography>
+        <Typography variant="body2">
+        No need to install any software. Study Genius works seamlessly in your browser, ensuring accessibility across all current operating systems and browsers.
+        </Typography>
+      </CardContent>
+    </Card>
+        </Grid>
+        <Grid item xs={3}>
+        <Card sx={{ minWidth: 275 }}>
+      <CardContent>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        No Installation Required
+        </Typography>
+        <Typography variant="body2">
+        Our platform operates in the cloud, eliminating the need for you to download or install any software. Extract pages and access your study materials effortlessly without consuming your system's resources.
+
+        </Typography>
+      </CardContent>
+    </Card>
+        </Grid>
+        <Grid item xs={3}>
+        <Card sx={{ minWidth: 275 }}>
+      <CardContent>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        Security Measures
+        </Typography>
+        <Typography variant="body2">
+        Rest assured that your files and results are secure with Study Genius. We do not store your files on our servers longer than necessary, prioritizing your privacy and security.
+        </Typography>
+      </CardContent>
+    </Card>
+        </Grid>
+        
+      </Grid>
+      </Box>
+
       {/* 3 sample paras */}
       <Typography style={styles.para} variant="body1" gutterBottom>
-        With StudyGenius, you can transform your textbooks, lecture notes,
-        research articles, and technical documents into personalized quizzes,
-        summaries, and explanations. Our platform is designed to be scalable, so
-        you can access it anytime, anywhere, and on any device.
+      Empower Your Learning Journey
+
+At Study Genius, we're committed to empowering students with comprehensive and accessible study aids. By leveraging cutting-edge technology, we bridge the gap between vast information repositories and your individual learning needs. Our objective is to enhance comprehension, retention, and overall academic success by providing tailored responses that cater to diverse learning styles.
+
       </Typography>
       <Typography style={styles.para} variant="body1" gutterBottom>
-        At StudyGenius, we prioritize user experience and innovation. While we
-        focus on text-based study materials, we continuously strive to improve
-        our platform and expand our offerings.
+      Questions and Answers
       </Typography>
       <Typography style={styles.para} variant="body1" gutterBottom>
-        Join us on this journey of learning and discovery. Let StudyGenius
-        empower you to achieve your academic and professional goals.
+      Please rate this app
+      </Typography>
+      <Typography style={styles.para} variant="body1" gutterBottom>
+      Please share this page
+      Help our new, cool and free tools to grow!
+      Write an article about our tools on your forum, blog or website.
       </Typography>
 
       {/* Get started button */}

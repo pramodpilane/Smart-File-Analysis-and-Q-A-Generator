@@ -17,18 +17,20 @@ const Header = ({color,setColor}) => {
         color={color}
         invertedColors
         sx={{
+          marginTop: "0",
           display: 'flex',
+          position: 'fixed',
           alignItems: 'center',
           flexGrow: 1,
           p: 2,
-          minWidth: 'min-content',
+          width:'100%',
           ...(color && {
             bgcolor: `${color}.700`,
         }),
         }}
       >
 
-      <Link to="/about"><img src={logo1} alt="logo" style={{ height: "80px", width: "90px", cursor: "pointer" }}/></Link>
+      {/* <Link to="/about"><img src={logo1} alt="logo" style={{ height: "80px", width: "90px", cursor: "pointer" }}/></Link> */}
           
         <Box sx={{ flex: 1, display: 'flex', px: 2, cursor: "pointer" }}>
             <Typography variant="h4" component="div">
