@@ -30,7 +30,7 @@ const Demo = styled("div")(({ theme }) => ({
 
 
 
-export default function Upload_file({ selectedFiles, setSelectedFiles }) {
+export default function Upload_file({ selectedFiles, setSelectedFiles, setSuggestion }) {
   const dense = false;
   const navigate = useNavigate();
 
@@ -45,6 +45,16 @@ export default function Upload_file({ selectedFiles, setSelectedFiles }) {
       method: "POST",
       body: formData,
     });
+
+    const response = await fetch("http://localhost:8000/suggest", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+
+    const data = await response.json();
+    await setSuggestion(data.suggestion);
 
     navigate(`/prompt`);
   };
