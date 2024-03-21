@@ -21,7 +21,7 @@ const Footer = ({color}) => {
         }),
         flexGrow: 1,
         p: 0.5,
-        //position:"sticky",
+        position:"sticky",
         bottom:0,
         width: "100%", // Set width to 100% of viewport width
         padding: "8px 0px", // Adjust padding as needed
