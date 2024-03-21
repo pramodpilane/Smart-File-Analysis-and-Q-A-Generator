@@ -18,21 +18,18 @@ function App() {
 
   return (
   <>
-  <Router>
-    <div>
+    <Router>
         <Header color={color} setColor={setColor} />
         <Routes>
           <Route exact path="/" element={<Upload_file selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} setSuggestion={setSuggestion}/>} />
           <Route exact path="/about" element={<About />} />
           <Route exact path="/prompt" element={<Module2 setFaq={setFaq} suggestion={suggestion}/>} />
+          <Route exact path="/prompt/faq" element={<Faq faq={faq}/>} />
           <Route exact path="/prompt/quiz" element={<Quiz />} />
           <Route exact path="/prompt/quiz/quizResult" element={<QuizResult />} />
-          <Route exact path="/prompt/faq" element={<Faq faq={faq}/>} />
-        </Routes>
+         </Routes>
         {/* <Footer color={color} /> */}
-      </div>
     </Router>
-
   </>
   );
 }

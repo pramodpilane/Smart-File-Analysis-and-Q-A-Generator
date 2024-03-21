@@ -13,6 +13,7 @@ import CustomAlert from '../assets/components/Alert';
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
+
 const Module2 = ({ setFaq, suggestion }) => {
   // State variables for the input field and error handling
   const [question, setQuestion] = useState("");
@@ -174,15 +175,16 @@ const Module2 = ({ setFaq, suggestion }) => {
               }}
             >
               {/* Suggestions */}
+
               <Link to="/prompt/quiz">
                 <Item elevation={10} >
                   <b>DEVELOP A QUIZ</b>
                 </Item>
               </Link>
-              
-              
+            
               <Item elevation={10} onClick={generateQA}>
                 <b>Question & Answers</b>
+
               </Item>
               <Item elevation={10} onClick={() => {setQuestion(`Describe about ${suggestion}`); handleDescriptionClick();}}>
                 <b>Describe about {suggestion}</b>
