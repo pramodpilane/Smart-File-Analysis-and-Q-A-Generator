@@ -10,7 +10,8 @@ const Faq = ({faq}) => {
   return (
     <>
       <Typography sx={{ textAlign: "center", paddingTop: "100px", textDecoration:"underline" }} variant="h4" contained="h4">Question & Answer</Typography>
-      {faq.map((i) => (<Accordion sx={{margin:"20px 80px"}}>
+      <div style={{margin:"40px 80px"}}>
+      {faq.map((i) => (<Accordion sx={{marginTop:"20px"}}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>{i[0]}</Typography>
         </AccordionSummary>
@@ -18,6 +19,7 @@ const Faq = ({faq}) => {
           <Typography>{i[1]}</Typography>
         </AccordionDetails>
       </Accordion>))}
+      </div> 
     </>
   )
 }

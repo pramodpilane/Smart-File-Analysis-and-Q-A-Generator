@@ -11,10 +11,9 @@ import Paper from "@mui/material/Paper";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import CustomAlert from '../assets/components/Alert';
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 
-const Module2 = ({ setFaq, suggestion }) => {
+const Module2 = ({ setQuiz, setFaq, suggestion }) => {
   // State variables for the input field and error handling
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = React.useState("");
@@ -22,22 +21,6 @@ const Module2 = ({ setFaq, suggestion }) => {
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
   const timer = React.useRef();
-  const navigate = useNavigate();
-
-  const quiz = async () => {
- 
-     const formData = new FormData();
-    // selectedFiles.forEach((file) => {
-    //   formData.append("files", file);
-    // });
-
-    // await fetch("http://localhost:8000/upload", {
-    //   method: "POST",
-    //   body: formData,
-    // });
-
-    navigate(`/prompt/quiz`);
-  };
 
   // Styled component for the suggestion items
   const Item = styled(Paper)(({ theme }) => ({
@@ -71,12 +54,11 @@ const Module2 = ({ setFaq, suggestion }) => {
   };
 
   // Function to handle submission of question
-  const submitQuestion = async (e) => {
+  const submitQuestion = async () => {
     if (!question.trim()) {
       setError("please enter a question before proceeding");
     } else {
-      handleButtonClick()
-      e.preventDefault();
+      handleButtonClick();
       const response = await fetch("http://localhost:8000/answer", {
         method: "POST",
         headers: {
@@ -91,7 +73,8 @@ const Module2 = ({ setFaq, suggestion }) => {
     }
   };
 
-  const handleDescriptionClick = async(e) => {
+  const handleDescriptionClick = async() => {
+    setQuestion(`Describe about ${suggestion}`);
     handleButtonClick();
     const response = await fetch("http://localhost:8000/answer", {
         method: "POST",
@@ -106,10 +89,9 @@ const Module2 = ({ setFaq, suggestion }) => {
     setAnswer(data.answer);
   }
 
-  const handleKeyClick = async(e) => {
+  const handleKeyClick = async() => {
     setQuestion("KEYPOINTS & KEYWORDS");
     handleButtonClick();
-    e.preventDefault();
     const response = await fetch("http://localhost:8000/keypw", {
         method: "GET",
         headers: {
@@ -122,8 +104,7 @@ const Module2 = ({ setFaq, suggestion }) => {
     setAnswer(data.keyPW);
   }
 
-  const generateQA = async (e) => {
-    e.preventDefault();
+  const generateQA = async () => {
     const response = await fetch("http://localhost:8000/faq", {
       method: "GET",
       headers: {
@@ -134,6 +115,19 @@ const Module2 = ({ setFaq, suggestion }) => {
     const data = await response.json();
     await setFaq(JSON.parse(data.QnA));
     navigate(`/prompt/faq`);
+  }
+
+  const generateQuiz = async () => {
+    const response = await fetch("http://localhost:8000/quiz", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+
+    const data = await response.json();
+    await setQuiz(JSON.parse(data.quiz));
+    navigate(`/prompt/quiz`);
   }
 
   const hasAns = answer && answer.length > 0;
@@ -177,17 +171,14 @@ const Module2 = ({ setFaq, suggestion }) => {
             >
               {/* Suggestions */}
 
-              <Link to="/prompt/quiz">
-                <Item elevation={10} >
-                  <b>DEVELOP A QUIZ</b>
-                </Item>
-              </Link>
             
+              <Item elevation={10} onClick={generateQuiz}>
+                  <b>DEVELOP A QUIZ</b>
+              </Item>
               <Item elevation={10} onClick={generateQA}>
                 <b>Question & Answers</b>
-
               </Item>
-              <Item elevation={10} onClick={() => {setQuestion(`Describe about ${suggestion}`); handleDescriptionClick();}}>
+              <Item elevation={10} onClick={handleDescriptionClick}>
                 <b>Describe about {suggestion}</b>
               </Item>
               <Item elevation={10} onClick={handleKeyClick}>
