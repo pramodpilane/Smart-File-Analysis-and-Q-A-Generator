@@ -6,28 +6,33 @@ import About from './Module1/about';
 import Module2 from './Module2/Module2';
 import Quiz from './Module2/QuizContent';
 import QuizResult from './Module2/QuizResult';
+import Faq from './FAQ/Faq';
 import Footer from './Header&Footer/Footer';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 function App() {
   const [color, setColor] = React.useState('primary');
   const [selectedFiles, setSelectedFiles] = React.useState([]);
+  const [faq, setFaq] = React.useState();
+  const [suggestion, setSuggestion] = React.useState();
 
   return (
   <>
-    <Router>
-      <div>
+  <Router>
+    <div>
         <Header color={color} setColor={setColor} />
         <Routes>
-          <Route exact path="/" element={<Upload_file selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles}/>} />
+          <Route exact path="/" element={<Upload_file selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} setSuggestion={setSuggestion}/>} />
           <Route exact path="/about" element={<About />} />
-          <Route exact path="/prompt" element={<Module2 />} />
+          <Route exact path="/prompt" element={<Module2 setFaq={setFaq} suggestion={suggestion}/>} />
           <Route exact path="/prompt/quiz" element={<Quiz />} />
           <Route exact path="/prompt/quiz/quizResult" element={<QuizResult />} />
+          <Route exact path="/prompt/faq" element={<Faq faq={faq}/>} />
         </Routes>
         {/* <Footer color={color} /> */}
       </div>
     </Router>
+
   </>
   );
 }

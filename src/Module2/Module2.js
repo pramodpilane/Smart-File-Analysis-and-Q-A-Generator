@@ -13,14 +13,14 @@ import CustomAlert from '../assets/components/Alert';
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const Module2 = () => {
+const Module2 = ({ setFaq, suggestion }) => {
   // State variables for the input field and error handling
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = React.useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = React.useState(false);
-  const timer = React.useRef();
   const navigate = useNavigate();
+  const timer = React.useRef();
 
   const quiz = async () => {
  
@@ -50,7 +50,7 @@ const Module2 = () => {
   // Theme for the light mode
   const lightTheme = createTheme({ palette: { mode: "light" } });
 
-  
+
 
   const handleButtonClick = () => {
     if (!loading) {
@@ -65,15 +65,15 @@ const Module2 = () => {
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
-    padding:"20px"
+    padding: "20px"
   };
 
   // Function to handle submission of question
   const submitQuestion = async (e) => {
-    handleButtonClick()
     if (!question.trim()) {
       setError("please enter a question before proceeding");
     } else {
+      handleButtonClick()
       e.preventDefault();
       const response = await fetch("http://localhost:8000/answer", {
         method: "POST",
@@ -89,13 +89,58 @@ const Module2 = () => {
     }
   };
 
+  const handleDescriptionClick = async(e) => {
+    handleButtonClick();
+    const response = await fetch("http://localhost:8000/answer", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ question }),
+      });
+
+    const data = await response.json();
+    setLoading(false);
+    setAnswer(data.answer);
+  }
+
+  const handleKeyClick = async(e) => {
+    setQuestion("KEYPOINTS & KEYWORDS");
+    handleButtonClick();
+    e.preventDefault();
+    const response = await fetch("http://localhost:8000/keypw", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+    });
+
+    const data = await response.json();
+    setLoading(false);
+    setAnswer(data.keyPW);
+  }
+
+  const generateQA = async (e) => {
+    e.preventDefault();
+    const response = await fetch("http://localhost:8000/faq", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+
+    const data = await response.json();
+    await setFaq(JSON.parse(data.QnA));
+    navigate(`/prompt/faq`);
+  }
+
   const hasAns = answer && answer.length > 0;
   return (
     <div style={myStyle}>
-        {/* Display error if input field is empty & submit button is clicked */}
+      {/* Display error if input field is empty & submit button is clicked */}
       {error && (
-        <CustomAlert severe="error" msg= {`ERROR: ${error}`} /> 
-         
+        <CustomAlert severe="error" msg={`ERROR: ${error}`} />
+
       )}
       {!hasAns && (
         <>
@@ -134,14 +179,16 @@ const Module2 = () => {
                   <b>DEVELOP A QUIZ</b>
                 </Item>
               </Link>
-              <Item elevation={10}>
-                <b>SUGGESTION 2</b>
+              
+              
+              <Item elevation={10} onClick={generateQA}>
+                <b>Question & Answers</b>
               </Item>
-              <Item elevation={10}>
-                <b>SUGGESTION 3</b>
+              <Item elevation={10} onClick={() => {setQuestion(`Describe about ${suggestion}`); handleDescriptionClick();}}>
+                <b>Describe about {suggestion}</b>
               </Item>
-              <Item elevation={10}>
-                <b>SUGGESTION 4</b>
+              <Item elevation={10} onClick={handleKeyClick}>
+                <b>KEYWORDS & KEYPOINTS</b>
               </Item>
             </Box>
           </ThemeProvider>
@@ -173,33 +220,33 @@ const Module2 = () => {
         />
         {/* Button to submit question */}
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ position: 'relative' }}>
-        <Button
-          variant="contained"
-          sx={{minHeight: '54px'}}
-          onClick={submitQuestion}
-        >
-          {!loading && <SendIcon />}
-        </Button>
-        {loading && (
-          <CircularProgress
-            size={24}
-            sx={{
-              color: blue[50],
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              marginTop: '-12px',
-              marginLeft: '-12px',
-            }}
-          />
-        )}
-      </Box>
-    </Box>
+          <Box sx={{ position: 'relative' }}>
+            <Button
+              variant="contained"
+              sx={{ minHeight: '54px' }}
+              onClick={submitQuestion}
+            >
+              {!loading && <SendIcon />}
+            </Button>
+            {loading && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  color: blue[50],
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+            )}
+          </Box>
+        </Box>
       </Grid>
       <br />
 
-      
+
 
       <Grid
         sx={{
@@ -213,7 +260,7 @@ const Module2 = () => {
           <TextField
             minRows={14}
             disabled
-            value={answer}
+            value={answer.trim()}
             fullWidth
             multiline
             id="fullWidth"
