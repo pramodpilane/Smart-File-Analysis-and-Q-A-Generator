@@ -11,6 +11,8 @@ import Paper from "@mui/material/Paper";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import CustomAlert from '../assets/components/Alert';
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 const Module2 = ({ setFaq, suggestion }) => {
   // State variables for the input field and error handling
@@ -20,6 +22,22 @@ const Module2 = ({ setFaq, suggestion }) => {
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
   const timer = React.useRef();
+  const navigate = useNavigate();
+
+  const quiz = async () => {
+ 
+     const formData = new FormData();
+    // selectedFiles.forEach((file) => {
+    //   formData.append("files", file);
+    // });
+
+    // await fetch("http://localhost:8000/upload", {
+    //   method: "POST",
+    //   body: formData,
+    // });
+
+    navigate(`/prompt/quiz`);
+  };
 
   // Styled component for the suggestion items
   const Item = styled(Paper)(({ theme }) => ({
@@ -158,11 +176,16 @@ const Module2 = ({ setFaq, suggestion }) => {
               }}
             >
               {/* Suggestions */}
-              <Item elevation={10}>
-                <b>SUGGESTION 1</b>
-              </Item>
+
+              <Link to="/prompt/quiz">
+                <Item elevation={10} >
+                  <b>DEVELOP A QUIZ</b>
+                </Item>
+              </Link>
+            
               <Item elevation={10} onClick={generateQA}>
                 <b>Question & Answers</b>
+
               </Item>
               <Item elevation={10} onClick={() => {setQuestion(`Describe about ${suggestion}`); handleDescriptionClick();}}>
                 <b>Describe about {suggestion}</b>
