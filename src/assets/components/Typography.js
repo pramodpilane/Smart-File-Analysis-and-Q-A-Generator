@@ -3,9 +3,9 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
 
-const CustomTypography = ({ text, variant }) => {
+const CustomTypography = ({ text, variant, style }) => {
   return (
-    <Typography variant={variant} component="h2">
+    <Typography variant={variant} component="h2" style={style}>
       <strong>{text}</strong>
     </Typography>
   );

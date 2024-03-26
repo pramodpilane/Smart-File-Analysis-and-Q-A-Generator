@@ -53,15 +53,18 @@ function Quiz({ quiz }) {
   };
 
   const revealCorrect = async () => {
-    setisAnswerSubmitted(true);
-    const question = quiz[current];
-    const answer = question[3];
-    console.log("answer: ", answer);
-    console.log("selectedRef: ", selectedValue);
-    if(answer==selectedValue)
-    {
-      UpdateCounter(counter + 1)
+    if(selectedValue){
+      setisAnswerSubmitted(true);
+      const question = quiz[current];
+      const answer = question[3];
+      console.log("answer: ", answer);
+      console.log("selectedRef: ", selectedValue);
+      if(answer==selectedValue )
+      {
+        UpdateCounter(counter + 1);
+      }
     }
+  
   };
 
 

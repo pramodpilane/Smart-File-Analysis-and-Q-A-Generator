@@ -11,6 +11,7 @@ import Paper from "@mui/material/Paper";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import CustomAlert from '../assets/components/Alert';
 import { useNavigate } from "react-router-dom";
+import CustomTypography from "../assets/components/Typography";
 
 
 const Module2 = ({ setQuiz, setFaq, suggestion }) => {
@@ -143,7 +144,7 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
       )}
       {!hasAns && (
         <>
-          <Box sx={{ p: 2 }} />
+          <Box  />
           <img
             src={logo1}
             alt="logo"
@@ -153,13 +154,13 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
       )}
 
       {/* Header */}
-      <h1>HOW CAN I HELP YOU TODAY?</h1>
+      <CustomTypography variant="H1" text={"HOW CAN I HELP YOU TODAY?"} style={{fontSize: "2rem", margin: "10px 0"}}/><br/>
 
-      {!hasAns && <Box sx={{ p: 9 }} />}
+      {/* {!hasAns && <Box sx={{ p: 9 }} />} */}
 
       {/* Suggestions grid */}
       <Grid container display="flex" justifyContent="center" spacing={2}>
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           {/* Theme provider for light mode */}
           <ThemeProvider theme={lightTheme}>
             <Box
@@ -176,16 +177,16 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
 
             
               <Item elevation={10} onClick={generateQuiz}>
-                  <b>DEVELOP A QUIZ</b>
+                  <b style={{textTransform:"uppercase"}}>DEVELOP A QUIZ</b>
               </Item>
               <Item elevation={10} onClick={generateQA}>
-                <b>Question & Answers</b>
+                <b style={{textTransform:"uppercase"}}>Question & Answers</b>
               </Item>
               <Item elevation={10} onClick={handleDescriptionClick}>
-                <b>Describe about {suggestion}</b>
+                <b style={{textTransform:"uppercase"}}>Describe about {suggestion}</b>
               </Item>
               <Item elevation={10} onClick={handleKeyClick}>
-                <b>KEYWORDS & KEYPOINTS</b>
+                <b style={{textTransform:"uppercase"}}>KEYWORDS & KEYPOINTS</b>
               </Item>
             </Box>
           </ThemeProvider>
@@ -198,8 +199,8 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
       {/* Input field for user prompt */}
       <Grid
         sx={{
-          width: 1600,
-          maxWidth: "100%",
+          minWidth: "80%" ,
+          maxWidth: "90%",
           display: "flex",
           flexDirection: "row",
         }}
@@ -248,14 +249,14 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
       <Grid
         sx={{
           width: 1500,
-          maxWidth: "100%",
+          maxWidth: "80%",
           margin: 1,
           marginBottom: "auto",
         }}
       >
         {hasAns && (
           <TextField
-            minRows={14}
+            minRows={5}
             disabled
             value={answer.trim()}
             fullWidth

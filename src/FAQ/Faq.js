@@ -10,11 +10,11 @@ const Faq = ({faq}) => {
   
   return (
     <>
-      <Typography sx={{ textAlign: "center", paddingTop: "100px", textDecoration:"underline" }} variant="h4" contained="h4">Question & Answer</Typography>
-      <Box sx={{margin:"40px 80px"}}>
-      {faq.map((i) => (<Accordion sx={{marginTop:"20px"}}>
+      <Typography sx={{ textAlign: "center", paddingTop: "100px", textTransform: "uppercase", fontWeight: "700"}} variant="h4" contained="h4">Questions & Answers</Typography>
+      <Box sx={{margin:"40px 100px"}}>
+      {faq.map((i) => (<Accordion sx={{marginTop:"10px"}}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>{i[0]}</Typography>
+          <Typography style={{fontWeight:"600"}}>{i[0]}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>{i[1]}</Typography>

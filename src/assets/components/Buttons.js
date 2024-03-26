@@ -5,11 +5,12 @@ import { Button, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
 
 const CustomSubmitButton = styled(Button)(({ theme }) => ({
-  maxWidth: "50em",
-  minWidth: "40em",
-  maxHeight: "7em",
-  minHeight: "4em",
+  maxWidth: "40em",
+  minWidth: "20em",
+  maxHeight: "4em",
+  minHeight: "2em",
   fontSize: "1.5rem", 
+  fontWeight: "700",
   marginTop: "3em",
 }));
 

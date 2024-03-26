@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import CustomTypography from '../assets/components/Typography';
 import { Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,8 @@ export default function QuizResult() {
       <Box>
       <CustomTypography variant="h4" text={`You have scored ${scored}/${total}`}/>
       </Box>
-      <span><SubmitButton size="small" variant="contained" text={" Home page "} onClick={() => navigate(-2)} /></span>
+      
+      <Link to={-2} style={{textDecoration:"none", fontSize: "1.2rem", backgroundColor: "blue", padding: "8px 20px", marginTop: "50px", color: "white", fontWeight: "600"}}>Go Back</Link>
     </div>
   )
 }
