@@ -74,14 +74,15 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
   };
 
   const handleDescriptionClick = async() => {
-    setQuestion(`Describe about ${suggestion}`);
+    const q = `Describe about ${suggestion}`;
+    setQuestion(q);
     handleButtonClick();
     const response = await fetch("http://localhost:8000/answer", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({ question: q }),
       });
 
     const data = await response.json();
@@ -117,7 +118,8 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
     navigate(`/prompt/faq`);
   }
 
-  const generateQuiz = async () => {
+  const 
+  generateQuiz = async () => {
     const response = await fetch("http://localhost:8000/quiz", {
       method: "GET",
       headers: {

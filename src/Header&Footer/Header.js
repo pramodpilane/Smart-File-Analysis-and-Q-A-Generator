@@ -7,6 +7,7 @@ import Button from '@mui/joy/Button';
 import Sheet from '@mui/joy/Sheet';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
 import Typography from '@mui/material/Typography';
+import zIndex from '@mui/material/styles/zIndex';
 
 
 const Header = ({color,setColor}) => {
@@ -22,6 +23,7 @@ const Header = ({color,setColor}) => {
           position: 'fixed',
           alignItems: 'center',
           flexGrow: 1,
+          zIndex: 999,
           p: 2,
           width:'100%',
           ...(color && {
