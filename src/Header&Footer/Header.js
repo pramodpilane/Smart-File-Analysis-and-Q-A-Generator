@@ -24,6 +24,7 @@ const Header = ({color,setColor}) => {
           alignItems: 'center',
           flexGrow: 1,
           zIndex: 999,
+          maxHeight: "64px",
           p: 2,
           width:'100%',
           ...(color && {
@@ -40,7 +41,7 @@ const Header = ({color,setColor}) => {
             </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', flexShrink: 0, gap: 2 }}>
+        <Box sx={{ display: 'flex', flexShrink: 0, gap: 2, px: 4 }}>
           <Badge badgeContent={0} variant="solid" color="danger">
                 <Button
                     onClick={() => {

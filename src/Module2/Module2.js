@@ -50,7 +50,8 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
-    padding: "20px"
+    paddingTop: "70px",
+    
   };
 
   // Function to handle submission of question
@@ -158,7 +159,7 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
 
       {/* Suggestions grid */}
       <Grid container display="flex" justifyContent="center" spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={8}>
           {/* Theme provider for light mode */}
           <ThemeProvider theme={lightTheme}>
             <Box
