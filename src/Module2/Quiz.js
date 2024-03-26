@@ -40,9 +40,12 @@ function Quiz({ quiz }) {
   };
 
   const moveNext = () => {
-    setisAnswerSubmitted(false);
-    setCurrent(current + 1);
-    setSelectedValue("");
+    if(isAnswerSubmitted){
+      setisAnswerSubmitted(false);
+      setCurrent(current + 1);
+      setSelectedValue("");
+    }
+    
   };
 
   const finish = () => {
