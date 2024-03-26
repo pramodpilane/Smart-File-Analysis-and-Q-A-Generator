@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import Button from "@mui/material/Button";
 import Radio from "@mui/material/Radio";
-import CustomAlert from '../assets/components/Alert';
 import { useNavigate } from "react-router-dom";
 
 const styles = {
@@ -53,7 +52,7 @@ function Quiz({ quiz }) {
   const revealCorrect = async () => {
     setisAnswerSubmitted(true);
     const question = quiz[current];
-    const answer = question.answer;
+    const answer = question[3];
     console.log("answer: ", answer);
     console.log("selectedRef: ", selectedValue);
     if(answer==selectedValue)
@@ -70,9 +69,9 @@ function Quiz({ quiz }) {
         style={{
           marginTop: "5px",
           backgroundColor: `${
-            isAnswerSubmitted && opt === quiz[current]?.answer
+            isAnswerSubmitted && opt === quiz[current]?.[3]
               ? "lightgreen"
-              : isAnswerSubmitted && opt === selectedValue && selectedValue !== quiz[current]?.answer
+              : isAnswerSubmitted && opt === selectedValue && selectedValue !== quiz[current]?.[3]
               ? "lightcoral"
               : ""
           }`,
@@ -129,10 +128,10 @@ function Quiz({ quiz }) {
 
         <hr style={{ marginBottom: "20px" }} />
         <Typography variant="h5" component="h2">
-          {question.question}
+          {question[1]}
         </Typography>
 
-        {renderOptions(question.options)}
+        {renderOptions(question[2])}
 
         <div style={styles.footer}>
           <Button onClick={revealCorrect} variant="contained" color="secondary">
@@ -169,3 +168,4 @@ Quiz.propTypes = {
 };
 
 export default Quiz;
+
