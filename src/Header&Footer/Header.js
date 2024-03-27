@@ -7,15 +7,15 @@ import Button from '@mui/joy/Button';
 import Sheet from '@mui/joy/Sheet';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
 import Typography from '@mui/material/Typography';
+import CustomTypography from '../assets/components/Typography';
 import zIndex from '@mui/material/styles/zIndex';
 
 
-const Header = ({color,setColor}) => {
+const Header = ({suggestion}) => {
 
     return (
       <Sheet
         variant="solid"
-        color={color}
         invertedColors
         sx={{
           marginTop: "0",
@@ -27,9 +27,7 @@ const Header = ({color,setColor}) => {
           maxHeight: "64px",
           p: 2,
           width:'100%',
-          ...(color && {
-            bgcolor: `${color}.700`,
-        }),
+          bgcolor: `${'primary'}.700`
         }}
       >
 
@@ -41,19 +39,10 @@ const Header = ({color,setColor}) => {
             </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', flexShrink: 0, gap: 2, px: 4 }}>
-          <Badge badgeContent={0} variant="solid" color="danger">
-                <Button
-                    onClick={() => {
-                        const colors = ['primary', 'neutral'];
-            
-                        const nextColorIndex = colors.indexOf(color) + 1;
-                        setColor(colors[nextColorIndex] ?? colors[0]);
-                    }}
-                >
-                    <ColorLensRoundedIcon fontSize="small" />
-                </Button>
-          </Badge>
+        <Box sx={{ display: 'flex', flexShrink: 0, gap: 8, px: 8 }}>
+          <Link to="/" style={{color:"white", textDecoration:"none"}}> <CustomTypography variant="h6" text="Home" style={{'&:hover': {color: '#0B6BCB',bgcolor:'white', p:0.5}}}/> </Link>
+          {suggestion && <Link to="/prompt" style={{color:"white", textDecoration:"none"}}> <CustomTypography variant="h6" text="Prompt" style={{'&:hover': {color: '#0B6BCB',bgcolor:'white', p:0.5}}}/> </Link>}
+          <Link to="/about" style={{color:"white", textDecoration:"none"}}> <CustomTypography variant="h6" text="About" style={{'&:hover': {color: '#0B6BCB',bgcolor:'white', p:0.5}}}/> </Link>
         </Box>
 
       </Sheet>

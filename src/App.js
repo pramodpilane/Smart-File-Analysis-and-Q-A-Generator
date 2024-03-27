@@ -11,7 +11,6 @@ import Footer from './Header&Footer/Footer';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 function App() {
-  const [color, setColor] = React.useState('primary');
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const [faq, setFaq] = React.useState();
   const [quiz,setQuiz] = React.useState();
@@ -19,7 +18,7 @@ function App() {
   return (
   <>
     <Router>
-        <Header color={color} setColor={setColor} />
+        <Header suggestion={suggestion}/>
         <Routes>
           <Route exact path="/" element={<Upload_file selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} setSuggestion={setSuggestion}/>} />
           <Route exact path="/about" element={<About />} />
@@ -28,7 +27,7 @@ function App() {
           <Route exact path="/prompt/quiz" element={<Quiz quiz={quiz}/>} />
           <Route exact path="/prompt/quiz/quizResult" element={<QuizResult />} />
          </Routes>
-        <Footer color={color} />
+        {/* <Footer color={color} /> */}
     </Router>
   </>
   );

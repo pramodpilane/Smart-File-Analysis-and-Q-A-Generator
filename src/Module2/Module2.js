@@ -93,7 +93,7 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
   }
 
   const handleKeyClick = async() => {
-    setQuestion("KEYPOINTS & KEYWORDS");
+    setQuestion("KEYWORDS & KEYPOINTS");
     handleButtonClick();
     const response = await fetch("http://localhost:8000/keypw", {
         method: "GET",
@@ -130,7 +130,9 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
     });
 
     const data = await response.json();
-    await setQuiz(JSON.parse(data.quiz));
+    const parsedQuiz = JSON.parse(data.quiz);
+    const limitedQuiz = parsedQuiz.slice(0,10);
+    await setQuiz(limitedQuiz);
     navigate(`/prompt/quiz`);
   }
 
