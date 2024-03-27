@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import logo1 from "../assets/images/OIG4.jpeg";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import CircularProgress from '@mui/material/CircularProgress';
-import { blue } from '@mui/material/colors';
+import CircularProgress from "@mui/material/CircularProgress";
+import { blue } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import CustomAlert from '../assets/components/Alert';
+import CustomAlert from "../assets/components/Alert";
 import { useNavigate } from "react-router-dom";
 import CustomTypography from "../assets/components/Typography";
-
+import { ShimmerThumbnail } from "react-shimmer-effects";
 
 const Module2 = ({ setQuiz, setFaq, suggestion }) => {
   // State variables for the input field and error handling
@@ -36,8 +36,6 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
   // Theme for the light mode
   const lightTheme = createTheme({ palette: { mode: "light" } });
 
-
-
   const handleButtonClick = () => {
     if (!loading) {
       setLoading(true);
@@ -52,7 +50,14 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
     justifyContent: "center",
     alignItems: "center",
     paddingTop: "70px",
-    
+  };
+
+  const StyleSheet = {
+   
+    box: {
+      width: "100%",
+      height: "300px",
+    }
   };
 
   // Function to handle submission of question
@@ -75,76 +80,84 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
     }
   };
 
-  const handleDescriptionClick = async() => {
+  const handleDescriptionClick = async () => {
     const q = `Describe about ${suggestion}`;
     setQuestion(q);
     handleButtonClick();
     const response = await fetch("http://localhost:8000/answer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ question: q }),
-      });
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ question: q }),
+    });
 
     const data = await response.json();
     setLoading(false);
     setAnswer(data.answer);
-  }
+  };
 
-  const handleKeyClick = async() => {
-    setQuestion("KEYPOINTS & KEYWORDS");
+  const handleKeyClick = async () => {
+    setQuestion("KEYWORDS & KEYPOINTS");
     handleButtonClick();
     const response = await fetch("http://localhost:8000/keypw", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        }
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     const data = await response.json();
     setLoading(false);
     setAnswer(data.keyPW);
-  }
+  };
 
   const generateQA = async () => {
     const response = await fetch("http://localhost:8000/faq", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-      }
+      },
     });
 
     const data = await response.json();
     await setFaq(JSON.parse(data.QnA));
     navigate(`/prompt/faq`);
-  }
+  };
 
-  const 
-  generateQuiz = async () => {
+  const generateQuiz = async () => {
     const response = await fetch("http://localhost:8000/quiz", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-      }
+      },
     });
 
     const data = await response.json();
     await setQuiz(JSON.parse(data.quiz));
     navigate(`/prompt/quiz`);
-  }
+  };
 
   const hasAns = answer && answer.length > 0;
+
+  // Replace line breaks with <br> tags, add extra line break before "KEY POINTS", and **KEYWORDS** with bolded text
+  const formattedAnswer = answer
+    .split('\n')
+    .map((line, index) => (
+      <React.Fragment key={index}>
+        {line.includes("KEY POINTS") && <br />} {/* Add extra line break before "KEY POINTS" */}
+        <span dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
+        <br />
+      </React.Fragment>
+    ));
+  
   return (
     <div style={myStyle}>
       {/* Display error if input field is empty & submit button is clicked */}
-      {error && (
-        <CustomAlert severe="error" msg={`ERROR: ${error}`} />
-
-      )}
+      {error && <CustomAlert severe="error" msg={`ERROR: ${error}`} />}
       {!hasAns && (
         <>
-          <Box  />
+          <Box />
           <img
             src={logo1}
             alt="logo"
@@ -154,7 +167,12 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
       )}
 
       {/* Header */}
-      <CustomTypography variant="H1" text={"HOW CAN I HELP YOU TODAY?"} style={{fontSize: "2rem", margin: "10px 0"}}/><br/>
+      <CustomTypography
+        variant="H1"
+        text={"HOW CAN I HELP YOU TODAY?"}
+        style={{ fontSize: "2rem", margin: "10px 0" }}
+      />
+      <br />
 
       {/* {!hasAns && <Box sx={{ p: 9 }} />} */}
 
@@ -175,18 +193,23 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
             >
               {/* Suggestions */}
 
-            
               <Item elevation={10} onClick={generateQuiz}>
-                  <b style={{textTransform:"uppercase"}}>DEVELOP A QUIZ</b>
+                <b style={{ textTransform: "uppercase" }}>DEVELOP A QUIZ</b>
               </Item>
               <Item elevation={10} onClick={generateQA}>
-                <b style={{textTransform:"uppercase"}}>Question & Answers</b>
+                <b style={{ textTransform: "uppercase" }}>
+                  Questions & Answers
+                </b>
               </Item>
               <Item elevation={10} onClick={handleDescriptionClick}>
-                <b style={{textTransform:"uppercase"}}>Describe about {suggestion}</b>
+                <b style={{ textTransform: "uppercase" }}>
+                  Describe about {suggestion}
+                </b>
               </Item>
               <Item elevation={10} onClick={handleKeyClick}>
-                <b style={{textTransform:"uppercase"}}>KEYWORDS & KEYPOINTS</b>
+                <b style={{ textTransform: "uppercase" }}>
+                  KEYWORDS & KEYPOINTS
+                </b>
               </Item>
             </Box>
           </ThemeProvider>
@@ -199,7 +222,7 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
       {/* Input field for user prompt */}
       <Grid
         sx={{
-          minWidth: "80%" ,
+          minWidth: "80%",
           maxWidth: "90%",
           display: "flex",
           flexDirection: "row",
@@ -217,11 +240,11 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
           }}
         />
         {/* Button to submit question */}
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box sx={{ position: 'relative' }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ position: "relative" }}>
             <Button
               variant="contained"
-              sx={{ minHeight: '54px' }}
+              sx={{ minHeight: "54px" }}
               onClick={submitQuestion}
             >
               {!loading && <SendIcon />}
@@ -231,20 +254,23 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
                 size={24}
                 sx={{
                   color: blue[50],
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  marginTop: '-12px',
-                  marginLeft: '-12px',
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
                 }}
               />
             )}
+            {/* {loading && (
+              <div>
+                <Shimmer width={200} height={100} />
+              </div>
+            )} */}
           </Box>
         </Box>
       </Grid>
       <br />
-
-
 
       <Grid
         sx={{
@@ -254,16 +280,29 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
           marginBottom: "auto",
         }}
       >
-        {hasAns && (
-          <TextField
-            minRows={5}
-            disabled
-            value={answer.trim()}
-            fullWidth
-            multiline
-            id="fullWidth"
-          />
+        {loading ? (
+          <div style={{}}>
+            <ShimmerThumbnail height={250} rounded />;
+          </div>
+        ) : hasAns ? (
+          <Box
+      sx={{
+        //margin: '10px',
+        padding: '15px',
+        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+        borderRadius: '5px',
+        //backgroundColor: '#f5f5f5',
+       // opacity: 0.5, // Adjust the opacity to simulate disabled look
+        border: '1px solid lightgrey', // Border style
+        whiteSpace: 'pre-line',
+      }}
+    >
+      {formattedAnswer}
+    </Box>  
+        ) : (
+          console.log(" doing nothing")
         )}
+        
       </Grid>
     </div>
   );

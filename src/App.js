@@ -28,7 +28,7 @@ function App() {
           <Route exact path="/prompt/quiz" element={<Quiz quiz={quiz}/>} />
           <Route exact path="/prompt/quiz/quizResult" element={<QuizResult />} />
          </Routes>
-        <Footer color={color} />
+        {/* <Footer color={color} /> */}
     </Router>
   </>
   );
