@@ -7,9 +7,38 @@ import Button from '@mui/joy/Button';
 import Sheet from '@mui/joy/Sheet';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
 import Typography from '@mui/material/Typography';
-import CustomTypography from '../assets/components/Typography';
 import zIndex from '@mui/material/styles/zIndex';
 
+// Define styles object
+const styles = {
+  sheet: {
+    marginTop: "0",
+    display: 'flex',
+    position: 'fixed',
+    alignItems: 'center',
+    flexGrow: 1,
+    zIndex: 999,
+    maxHeight: "64px",
+    p: 2,
+    width:'100%',
+    bgcolor: `${'primary'}.700`
+  },
+  link: {
+    color: "white",
+    textDecoration: "none",
+    height: '100%'
+  },
+  linkWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    transition: 'background-color 0.3s ease, color 0.3s ease',
+    height: '100%',
+    '&:hover': {
+      textDecoration: "underline",
+           
+    }
+  }
+};
 
 const Header = ({suggestion}) => {
 
@@ -17,36 +46,42 @@ const Header = ({suggestion}) => {
       <Sheet
         variant="solid"
         invertedColors
-        sx={{
-          marginTop: "0",
-          display: 'flex',
-          position: 'fixed',
-          alignItems: 'center',
-          flexGrow: 1,
-          zIndex: 999,
-          maxHeight: "64px",
-          p: 2,
-          width:'100%',
-          bgcolor: `${'primary'}.700`
-        }}
+        sx={styles.sheet}
       >
-
-      {/* <Link to="/about"><img src={logo1} alt="logo" style={{ height: "80px", width: "90px", cursor: "pointer" }}/></Link> */}
-          
-        <Box sx={{ flex: 1, display: 'flex', px: 2, cursor: "pointer" }}>
+        <Box sx={{ flex: 1, display: 'flex', px: 2 }}>
             <Typography variant="h4" component="div">
-            <strong>StudyGenius</strong>
+              <strong>StudyGenius</strong>
             </Typography>
         </Box>
 
         <Box sx={{ display: 'flex', flexShrink: 0, gap: 8, px: 8 }}>
-          <Link to="/" style={{color:"white", textDecoration:"none"}}> <CustomTypography variant="h6" text="Home" style={{'&:hover': {color: '#0B6BCB',bgcolor:'white', p:0.5}}}/> </Link>
-          {suggestion && <Link to="/prompt" style={{color:"white", textDecoration:"none"}}> <CustomTypography variant="h6" text="Prompt" style={{'&:hover': {color: '#0B6BCB',bgcolor:'white', p:0.5}}}/> </Link>}
-          <Link to="/about" style={{color:"white", textDecoration:"none"}}> <CustomTypography variant="h6" text="About" style={{'&:hover': {color: '#0B6BCB',bgcolor:'white', p:0.5}}}/> </Link>
+          <Link to="/" style={styles.link}>
+            <Box sx={styles.linkWrapper}>
+              <Typography variant="h6" component="div">
+                Home
+              </Typography>
+            </Box>
+          </Link>
+          {suggestion && 
+            <Link to="/prompt" style={styles.link}>
+              <Box sx={styles.linkWrapper}>
+                <Typography variant="h6" component="div">
+                  Prompt
+                </Typography>
+              </Box>
+            </Link>
+          }
+          <Link to="" style={styles.link}>
+            <Box sx={styles.linkWrapper}>
+              <Typography variant="h6" component="div">
+                About
+              </Typography>
+            </Box>
+          </Link>
         </Box>
 
       </Sheet>
     );
-  }
+}
 
-export default Header
+export default Header;

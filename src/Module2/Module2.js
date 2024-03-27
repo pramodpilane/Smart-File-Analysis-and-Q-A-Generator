@@ -113,6 +113,7 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
   };
 
   const generateQA = async () => {
+    showLoader();
     const response = await fetch("http://localhost:8000/faq", {
       method: "GET",
       headers: {
@@ -122,10 +123,12 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
 
     const data = await response.json();
     await setFaq(JSON.parse(data.QnA));
+    hideLoader();
     navigate(`/prompt/faq`);
   };
 
   const generateQuiz = async () => {
+    showLoader();
     const response = await fetch("http://localhost:8000/quiz", {
       method: "GET",
       headers: {
@@ -137,6 +140,7 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
     const parsedQuiz = JSON.parse(data.quiz);
     const limitedQuiz = parsedQuiz.slice(0,10);
     await setQuiz(limitedQuiz);
+    hideLoader();
     navigate(`/prompt/quiz`);
   };
 
@@ -175,8 +179,6 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
         style={{ fontSize: "2rem", margin: "10px 0" }}
       />
       <br />
-
-      {/* {!hasAns && <Box sx={{ p: 9 }} />} */}
 
       {/* Suggestions grid */}
       <Grid container display="flex" justifyContent="center" spacing={2}>
@@ -264,11 +266,7 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
                 }}
               />
             )}
-            {/* {loading && (
-              <div>
-                <Shimmer width={200} height={100} />
-              </div>
-            )} */}
+          
           </Box>
         </Box>
       </Grid>
@@ -284,17 +282,14 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
       >
         {loading ? (
           <div style={{}}>
-            <ShimmerThumbnail height={250} rounded />;
+            <ShimmerThumbnail height={250} rounded />
           </div>
         ) : hasAns ? (
           <Box
       sx={{
-        //margin: '10px',
         padding: '15px',
         boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
         borderRadius: '5px',
-        //backgroundColor: '#f5f5f5',
-       // opacity: 0.5, // Adjust the opacity to simulate disabled look
         border: '1px solid lightgrey', // Border style
         whiteSpace: 'pre-line',
       }}
@@ -311,3 +306,39 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
 };
 
 export default Module2;
+
+
+function showLoader() {
+  // Create pop-up loader element
+  const loader = document.createElement("div");
+  loader.id = "loader";
+  loader.innerHTML = "Loading...<br> Please Wait"; // You can customize the loader message/style
+
+  // Style the loader
+  loader.style.position = "fixed";
+  loader.style.display = "flex";
+  loader.style.justifyContent = "center";
+  loader.style.alignItems = "center";
+  loader.style.fontSize = "2rem";
+  loader.style.top = "50%";
+  loader.style.left = "50%";
+  loader.style.height = "100vh";
+  loader.style.width = "100vw";
+  loader.style.transform = "translate(-50%, -50%)";
+  loader.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+  loader.style.color = "#fff";
+  loader.style.padding = "100px";
+  loader.style.borderRadius = "5px";
+  loader.style.zIndex = "9999"; // Ensure it's on top of everything
+
+  // Append loader to the document body
+  document.body.appendChild(loader);
+}
+
+function hideLoader() {
+  // Find and remove the loader element
+  const loader = document.getElementById("loader");
+  if (loader) {
+    loader.parentNode.removeChild(loader);
+  }
+}

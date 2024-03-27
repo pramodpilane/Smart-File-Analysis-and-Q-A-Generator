@@ -46,7 +46,7 @@ const SubmitButton = ({ size, variant, onClick, children }) => {
     >
       {loading ? (
         showProgress ? (
-          <CircularProgress color="primary" size={24} />
+          <CircularProgress style={{'color': 'darkgrey'}} size={24} />
         ) : (
           <span style={{fontSize:"1rem", color: "darkgrey"}}>Please wait...</span>
         )
