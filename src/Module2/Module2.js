@@ -134,7 +134,9 @@ const Module2 = ({ setQuiz, setFaq, suggestion }) => {
     });
 
     const data = await response.json();
-    await setQuiz(JSON.parse(data.quiz));
+    const parsedQuiz = JSON.parse(data.quiz);
+    const limitedQuiz = parsedQuiz.slice(0,10);
+    await setQuiz(limitedQuiz);
     navigate(`/prompt/quiz`);
   };
 

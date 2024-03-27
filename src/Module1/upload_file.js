@@ -1,5 +1,5 @@
 //importing react essentials
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 //importing images from assets
 import logo1 from "../assets/images/OIG4.jpeg";
@@ -20,6 +20,7 @@ import {
   ListItemText,
   Avatar,
   ListItemAvatar,
+  Divider,
 } from "@mui/material";
 
 
@@ -35,7 +36,6 @@ export default function Upload_file({ selectedFiles, setSelectedFiles, setSugges
   const navigate = useNavigate();
 
   const uploadFile = async () => {
-    
     const formData = new FormData();
     selectedFiles.forEach((file) => {
       formData.append("files", file);
@@ -55,7 +55,6 @@ export default function Upload_file({ selectedFiles, setSelectedFiles, setSugges
 
     const data = await response.json();
     await setSuggestion(data.suggestion);
-
     navigate(`/prompt`);
   };
 
@@ -104,9 +103,7 @@ export default function Upload_file({ selectedFiles, setSelectedFiles, setSugges
               gap={4}
               p={4}
             >
-              <UploadButton action= {uploadHandler}
-                
-                />
+              <UploadButton action= {uploadHandler} />
               <CustomTypography variant="h6" text ="Supported Files" />
               <CustomTypography variant="body2" text = "PDF, DOCX"  />
              
@@ -119,13 +116,15 @@ export default function Upload_file({ selectedFiles, setSelectedFiles, setSugges
         )}
         <Grid item xs={12} md={7}>
         {hasFiles && (
-          <CustomTypography text="UPLOADED FILES" variant="h6" style={{  mt: 8, mb: 1 }} component="div"/>
+          <CustomTypography text="Uploaded Files" variant="h6" style={{  mt: 8, mb: 1 }} component="div"/>
         )}
           
           <Demo>
-            <List dense={dense}>
+            <List dense={dense} sx={{m:1}}>
               {hasFiles &&
                 selectedFiles.map((f) => (
+                  <>
+                  <Divider component="li" />
                   <ListItem
                     secondaryAction={
                       <DeleteIconButton action = {() => deleteFile(f.name)} />
@@ -138,6 +137,8 @@ export default function Upload_file({ selectedFiles, setSelectedFiles, setSugges
                     </ListItemAvatar>
                     <ListItemText primary={f.name} />
                   </ListItem>
+                  <Divider component="li" />
+                  </>
                 ))}
             </List>
           </Demo>
