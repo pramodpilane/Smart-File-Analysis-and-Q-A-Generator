@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 
 const CustomTypography = ({ text, variant, style }) => {
   return (
-    <Typography variant={variant} component="h2" style={style}>
+    <Typography variant={variant} component="h2" sx={style}>
       <strong>{text}</strong>
     </Typography>
   );
