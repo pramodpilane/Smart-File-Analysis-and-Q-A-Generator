@@ -78,7 +78,7 @@ export default function Upload_file({ selectedFiles, setSelectedFiles, setSugges
         direction="column"
         alignItems="center"
         justifyContent="center"
-        sx={{ minHeight: "70vh", paddingTop: "70px", pb: 10 }}
+        sx={{ minHeight: "70vh", paddingTop: "80px", pb: 10 }}
       >
         {!hasFiles && (
           <img
@@ -88,7 +88,7 @@ export default function Upload_file({ selectedFiles, setSelectedFiles, setSugges
           />
         )}
         <Grid item xs={3} >
-        <CustomTypography variant="h3" text="SMART FILE ANALYSIS"/>
+        <CustomTypography variant="h3" text="SMART FILE ANALYSIS" sx={{mt:2}}/>
         </Grid>
         {/* Grid item: Upload file */}
         <Grid item xs={3}>

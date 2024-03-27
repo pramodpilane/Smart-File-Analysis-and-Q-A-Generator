@@ -24,7 +24,6 @@ const UploadButton = ({ action }) => {
             minWidth: "20em",
             maxHeight: "7em",
             minHeight: "5em",
-            fontsize: "8rem",
           },
     };
   return (
@@ -33,10 +32,9 @@ const UploadButton = ({ action }) => {
                 role={undefined}
                 variant="contained"
                 style={styles.button}
-                tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
+                startIcon={<CloudUploadIcon style={{height: "30", width: "30"}} />}
               >
-                <strong> UPLOAD</strong>
+                <strong style={{fontSize: "1.6rem"}}> UPLOAD</strong>
                 <VisuallyHiddenInput
                   type="file"
                   multiple
