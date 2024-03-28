@@ -67,8 +67,11 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        sx={{ minHeight: "70vh", paddingTop: "80px", pb: 10 }}
+        sx={{ minHeight: "70vh", paddingTop: "70px", pb: 10 }}
       >
+        {hasFiles && (
+          <div style={{paddingTop:"30px"}}></div>
+        )}
         {!hasFiles && (
           <img
             src={logo1}

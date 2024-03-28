@@ -1,6 +1,6 @@
 // SubmitButton.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
 
@@ -16,6 +16,19 @@ const CustomSubmitButton = styled(Button)(({ theme }) => ({
 
 const SubmitButton = ({ size, variant, onClick, children }) => {
   const [loading, setLoading] = useState(false);
+  const [showProgress, setShowProgress] = useState(true);
+
+  useEffect(() => {
+    let timer;
+    if (loading) {
+      timer = setInterval(() => {
+        setShowProgress((prevShowProgress) => !prevShowProgress);
+      }, 3000);
+    } else {
+      setShowProgress(true);
+    }
+    return () => clearInterval(timer);
+  }, [loading]);
 
   const handleClick = async () => {
     setLoading(true);
@@ -31,7 +44,15 @@ const SubmitButton = ({ size, variant, onClick, children }) => {
       onClick={handleClick}
       disabled={loading}
     >
-      {loading ? <CircularProgress color="primary" size={24} /> : children}
+      {loading ? (
+        showProgress ? (
+          <CircularProgress style={{'color': 'darkgrey'}} size={24} />
+        ) : (
+          <span style={{fontSize:"1rem", color: "darkgrey"}}>Please wait...</span>
+        )
+      ) : (
+        children
+      )}
     </CustomSubmitButton>
   );
 };
