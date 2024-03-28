@@ -11,7 +11,19 @@ import CustomTypography from '../assets/components/Typography';
 import zIndex from '@mui/material/styles/zIndex';
 
 
-const Header = ({suggestion}) => {
+const Header = () => {
+  const [binFolderHasFiles, setBinFolderHasFiles] = React.useState(false);
+
+  React.useEffect(() => {
+    fetch("http://localhost:8000/check_bin_folder")
+      .then((response) => response.json())
+      .then((data) => {
+        setBinFolderHasFiles(data.bin_folder_has_files);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
     return (
       <Sheet
@@ -41,7 +53,7 @@ const Header = ({suggestion}) => {
 
         <Box sx={{ display: 'flex', flexShrink: 0, gap: 8, px: 8 }}>
           <Link to="/" style={{color:"white", textDecoration:"none"}}> <CustomTypography variant="h6" text="Home" style={{'&:hover': {color: '#0B6BCB',bgcolor:'white', p:0.5}}}/> </Link>
-          {suggestion && <Link to="/prompt" style={{color:"white", textDecoration:"none"}}> <CustomTypography variant="h6" text="Prompt" style={{'&:hover': {color: '#0B6BCB',bgcolor:'white', p:0.5}}}/> </Link>}
+          {binFolderHasFiles && <Link to="/prompt" style={{color:"white", textDecoration:"none"}}> <CustomTypography variant="h6" text="Prompt" style={{'&:hover': {color: '#0B6BCB',bgcolor:'white', p:0.5}}}/> </Link>}
           <Link to="/about" style={{color:"white", textDecoration:"none"}}> <CustomTypography variant="h6" text="About" style={{'&:hover': {color: '#0B6BCB',bgcolor:'white', p:0.5}}}/> </Link>
         </Box>
 
