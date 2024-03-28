@@ -40,7 +40,19 @@ const styles = {
   }
 };
 
-const Header = ({suggestion}) => {
+const Header = () => {
+  const [binFolderHasFiles, setBinFolderHasFiles] = React.useState(false);
+
+  React.useEffect(() => {
+    fetch("http://localhost:8000/check_bin_folder")
+      .then((response) => response.json())
+      .then((data) => {
+        setBinFolderHasFiles(data.bin_folder_has_files);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
     return (
       <Sheet
@@ -62,7 +74,7 @@ const Header = ({suggestion}) => {
               </Typography>
             </Box>
           </Link>
-          {suggestion && 
+          {binFolderHasFiles && 
             <Link to="/prompt" style={styles.link}>
               <Box sx={styles.linkWrapper}>
                 <Typography variant="h6" component="div">

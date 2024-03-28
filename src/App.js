@@ -12,19 +12,17 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 function App() {
   const [selectedFiles, setSelectedFiles] = React.useState([]);
-  const [faq, setFaq] = React.useState();
-  const [quiz,setQuiz] = React.useState();
-  const [suggestion, setSuggestion] = React.useState();
+
   return (
   <>
     <Router>
-        <Header suggestion={suggestion}/>
+        <Header />
         <Routes>
-          <Route exact path="/" element={<Upload_file selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} setSuggestion={setSuggestion}/>} />
+          <Route exact path="/" element={<Upload_file selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />} />
           <Route exact path="/about" element={<About />} />
-          <Route exact path="/prompt" element={<Module2 setQuiz={setQuiz} setFaq={setFaq} suggestion={suggestion}/>} />
-          <Route exact path="/prompt/faq" element={<Faq faq={faq}/>} />
-          <Route exact path="/prompt/quiz" element={<Quiz quiz={quiz}/>} />
+          <Route exact path="/prompt" element={<Module2 />} />
+          <Route exact path="/prompt/faq" element={<Faq />} />
+          <Route exact path="/prompt/quiz" element={<Quiz />} />
           <Route exact path="/prompt/quiz/quizResult" element={<QuizResult />} />
          </Routes>
         {/* <Footer color={color} /> */}
