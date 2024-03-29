@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -28,11 +28,13 @@ const styles = {
   },
 };
 
-function Quiz({ quiz }) {
+function Quiz() {
+  const [quiz,setQuiz] = useState([]);
   const [current, setCurrent] = useState(0);
   const [counter, UpdateCounter] = useState(0);
   const [selectedValue, setSelectedValue] = useState("");
   const [isAnswerSubmitted, setisAnswerSubmitted] = useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   
@@ -44,6 +46,27 @@ function Quiz({ quiz }) {
     });
   }
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://localhost:8000/quiz", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+        });
+        const data = await response.json();
+        const parsedQuiz = JSON.parse(data.quiz);
+        const limitedQuiz = parsedQuiz.slice(0,10);
+        setQuiz(limitedQuiz);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching suggestion:', error);
+      }
+    }
+    fetchData();
+  }, []);
+  
   const handleChange = async (event) => {
     setisAnswerSubmitted(false);
     setSelectedValue(event.target.value);
@@ -138,6 +161,10 @@ function Quiz({ quiz }) {
   const curQuestion = current + 1;
   const size = quiz.length;
   const moveRight = current + 1 < size;
+
+  if (loading) {
+    return <Typography variant="h1" component="h1" sx={{p:5, textAlign:"center"}}>LOADING</Typography>
+  }
 
   return (
    

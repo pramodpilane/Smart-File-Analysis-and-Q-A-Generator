@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo1 from "../assets/images/OIG4.jpeg";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -14,14 +14,33 @@ import { useNavigate } from "react-router-dom";
 import CustomTypography from "../assets/components/Typography";
 import { ShimmerThumbnail } from "react-shimmer-effects";
 
-const Module2 = ({ setQuiz, setFaq, suggestion }) => {
+const Module2 = () => {
   // State variables for the input field and error handling
   const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = React.useState("");
+  const [answer, setAnswer] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [suggestion, setSuggestion] = React.useState();
   const navigate = useNavigate();
   const timer = React.useRef();
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://localhost:8000/suggest", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+        const data = await response.json();
+        setSuggestion(data.suggestion);
+      } catch (error) {
+        console.error('Error fetching suggestion:', error);
+      }
+    }
+    fetchData();
+  }, []);
 
   // Styled component for the suggestion items
   const Item = styled(Paper)(({ theme }) => ({

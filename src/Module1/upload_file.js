@@ -1,5 +1,5 @@
 //importing react essentials
-import React, {useState} from "react";
+import React, {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 //importing images from assets
 import logo1 from "../assets/images/OIG4.jpeg";
@@ -30,8 +30,7 @@ const Demo = styled("div")(({ theme }) => ({
 }));
 
 
-
-export default function Upload_file({ selectedFiles, setSelectedFiles, setSuggestion }) {
+export default function Upload_file({selectedFiles, setSelectedFiles}) {
   const dense = false;
   const navigate = useNavigate();
 
@@ -46,15 +45,6 @@ export default function Upload_file({ selectedFiles, setSelectedFiles, setSugges
       body: formData,
     });
 
-    const response = await fetch("http://localhost:8000/suggest", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    });
-
-    const data = await response.json();
-    await setSuggestion(data.suggestion);
     navigate(`/prompt`);
   };
 
@@ -125,12 +115,12 @@ export default function Upload_file({ selectedFiles, setSelectedFiles, setSugges
           <Demo>
             <List dense={dense} sx={{m:1}}>
               {hasFiles &&
-                selectedFiles.map((f) => (
+                selectedFiles.map((file) => (
                   <>
                   <Divider component="li" />
                   <ListItem
                     secondaryAction={
-                      <DeleteIconButton action = {() => deleteFile(f.name)} />
+                      <DeleteIconButton action = {() => deleteFile(file.name)} />
                     }
                   >
                     <ListItemAvatar>
@@ -138,7 +128,7 @@ export default function Upload_file({ selectedFiles, setSelectedFiles, setSugges
                         <DescriptionIcon />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={f.name} />
+                    <ListItemText primary={file.name} />
                   </ListItem>
                   <Divider component="li" />
                   </>
