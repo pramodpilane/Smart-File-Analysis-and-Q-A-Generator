@@ -79,10 +79,21 @@ const Module2 = () => {
     }
   };
 
+  async function delay(delayInms) {
+    return new Promise(resolve  => {
+      setTimeout(() => {
+        resolve(2);
+      }, delayInms);
+    });
+  }
+
   // Function to handle submission of question
   const submitQuestion = async () => {
+  
     if (!question.trim()) {
       setError("please enter a question before proceeding");
+      await delay(6000);
+      setError("");
     } else {
       handleButtonClick();
       const response = await fetch("http://localhost:8000/answer", {
@@ -131,20 +142,64 @@ const Module2 = () => {
     setAnswer(data.keyPW);
   };
 
-  const generateQA = () => {
-    navigate(`/prompt/faq`);
+  const generateQA = async () => {
+    showLoader();
+    const response = await fetch("http://localhost:8000/faq", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response.ok);
+    if(response.ok){
+    try {
+      const data = await response.json();
+      console.log(data)
+      await setFaq(JSON.parse(data.QnA));
+      hideLoader();
+      navigate(`/prompt/faq`);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  else{
+    hideLoader();
+    setError("Server is down, Please try again later");
+    await delay(6000);
+    setError("");
+  }
+   
   };
 
-  const 
-  generateQuiz = () => {
-    navigate(`/prompt/quiz`);
+  const generateQuiz = async () => {
+    showLoader();
+    const response = await fetch("http://localhost:8000/quiz", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if(response.ok){
+      const data = await response.json();
+      const parsedQuiz = JSON.parse(data.quiz);
+      const limitedQuiz = parsedQuiz.slice(0,10);
+      await setQuiz(limitedQuiz);
+      hideLoader();
+      navigate(`/prompt/quiz`);
+    }
+    else{
+      hideLoader();
+      setError("Server is down, Please try again later");
+      await delay(6000);
+      setError("");
+    }
+    
   };
 
   const hasAns = answer && answer.length > 0;
 
   // Replace line breaks with <br> tags, add extra line break before "KEY POINTS", and **KEYWORDS** with bolded text
-  const formattedAnswer = answer
-    .split('\n')
+  const formattedAnswer = answer.split('\n')
     .map((line, index) => (
       <React.Fragment key={index}>
         {line.includes("KEY POINTS") && <br />} {/* Add extra line break before "KEY POINTS" */}
@@ -280,7 +335,7 @@ const Module2 = () => {
           <div style={{}}>
             <ShimmerThumbnail height={250} rounded />
           </div>
-        ) : hasAns ? (
+        ) : hasAns && (
           <Box
       sx={{
         padding: '15px',
@@ -292,9 +347,7 @@ const Module2 = () => {
     >
       {formattedAnswer}
     </Box>  
-        ) : (
-          console.log(" doing nothing")
-        )}
+        ) }
         
       </Grid>
     </div>
