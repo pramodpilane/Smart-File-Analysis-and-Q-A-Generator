@@ -49,9 +49,11 @@ const Header = ({suggestion}) => {
         sx={styles.sheet}
       >
         <Box sx={{ flex: 1, display: 'flex', px: 2 }}>
+        <Link to="/" style={styles.link} >
             <Typography variant="h4" component="div">
               <strong>StudyGenius</strong>
             </Typography>
+            </Link>
         </Box>
 
         <Box sx={{ display: 'flex', flexShrink: 0, gap: 8, px: 8 }}>
@@ -71,7 +73,7 @@ const Header = ({suggestion}) => {
               </Box>
             </Link>
           }
-          <Link to="" style={styles.link}>
+          <Link  style={styles.link}>
             <Box sx={styles.linkWrapper}>
               <Typography variant="h6" component="div">
                 About

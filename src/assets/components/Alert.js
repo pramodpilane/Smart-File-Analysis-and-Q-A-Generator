@@ -15,7 +15,7 @@ const CustomAlert = ({ severe, msg }) => {
   }, []);
 
   return (
-    <Stack sx={{ width: '100%', paddingTop: '60px'}} spacing={2}>
+    <Stack sx={{ width: '100%', paddingTop: '0px', position: "fixed", top:70}} spacing={2}>
       <Collapse in={showAlert} timeout={1000} unmountOnExit>
         <Alert severity={severe} >{msg}</Alert>
       </Collapse>

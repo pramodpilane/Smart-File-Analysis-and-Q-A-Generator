@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import Button from "@mui/material/Button";
 import Radio from "@mui/material/Radio";
 import { useNavigate } from "react-router-dom";
+import CustomAlert from "../assets/components/Alert";
 
 const styles = {
   root: {
@@ -31,7 +33,16 @@ function Quiz({ quiz }) {
   const [counter, UpdateCounter] = useState(0);
   const [selectedValue, setSelectedValue] = useState("");
   const [isAnswerSubmitted, setisAnswerSubmitted] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  
+  async function delay(delayInms) {
+    return new Promise(resolve  => {
+      setTimeout(() => {
+        resolve(2);
+      }, delayInms);
+    });
+  }
 
   const handleChange = async (event) => {
     setisAnswerSubmitted(false);
@@ -39,11 +50,16 @@ function Quiz({ quiz }) {
     console.log("event value:", selectedValue);
   };
 
-  const moveNext = () => {
+  const moveNext = async() => {
     if(isAnswerSubmitted){
       setisAnswerSubmitted(false);
       setCurrent(current + 1);
       setSelectedValue("");
+    }
+    else{
+      setError("please submit before proceeding");
+      await delay(6000);
+      setError("");
     }
     
   };
@@ -53,6 +69,7 @@ function Quiz({ quiz }) {
   };
 
   const revealCorrect = async () => {
+    if(!isAnswerSubmitted){
     if(selectedValue){
       setisAnswerSubmitted(true);
       const question = quiz[current];
@@ -64,8 +81,18 @@ function Quiz({ quiz }) {
         UpdateCounter(counter + 1);
       }
     }
-  
-  };
+    else{
+      setError("please select your answer before submitting");
+      await delay(6000);
+      setError("");
+    }
+    }
+    else{
+      setError("Answer has been submitted, please click on next");
+      await delay(6000);
+      setError("");
+    }
+  }
 
 
   const renderOptions = (options) => {
@@ -113,14 +140,17 @@ function Quiz({ quiz }) {
   const moveRight = current + 1 < size;
 
   return (
-    <div
+   
+    <Box
       style={{
-        height: "100vh",
+        height: "80vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        paddingTop: "80px"
       }}
     >
+      {error && <CustomAlert severe="error" msg={`ERROR: ${error}`} />}
       <Paper style={styles.root} elevation={4}>
         <Typography component="p">
           <Button variant="contained" color="primary" style={styles.button}>
@@ -128,7 +158,7 @@ function Quiz({ quiz }) {
           </Button>
           <span style={styles.questionMeta}>
             {" "}
-            Question # {curQuestion} / {size}
+            Question #{curQuestion} / {size}
           </span>
         </Typography>
 
@@ -165,7 +195,8 @@ function Quiz({ quiz }) {
 
         </div>
       </Paper>
-    </div>
+    </Box>
+
   );
 }
 
