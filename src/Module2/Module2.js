@@ -143,57 +143,57 @@ const Module2 = () => {
   };
 
   const generateQA = async () => {
-    showLoader();
-    const response = await fetch("http://localhost:8000/faq", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(response.ok);
-    if(response.ok){
-    try {
-      const data = await response.json();
-      console.log(data)
-      await setFaq(JSON.parse(data.QnA));
-      hideLoader();
-      navigate(`/prompt/faq`);
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  else{
-    hideLoader();
-    setError("Server is down, Please try again later");
-    await delay(6000);
-    setError("");
-  }
-   
+  //   showLoader();
+  //   const response = await fetch("http://localhost:8000/faq", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   console.log(response.ok);
+  //   if(response.ok){
+  //   try {
+  //     const data = await response.json();
+  //     console.log(data)
+  //     await setFaq(JSON.parse(data.QnA));
+  //     hideLoader();
+  //     navigate(`/prompt/faq`);
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+  // else{
+  //   hideLoader();
+  //   setError("Server is down, Please try again later");
+  //   await delay(6000);
+  //   setError("");
+  // }
+  navigate(`/prompt/faq`);
   };
 
   const generateQuiz = async () => {
-    showLoader();
-    const response = await fetch("http://localhost:8000/quiz", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if(response.ok){
-      const data = await response.json();
-      const parsedQuiz = JSON.parse(data.quiz);
-      const limitedQuiz = parsedQuiz.slice(0,10);
-      await setQuiz(limitedQuiz);
-      hideLoader();
-      navigate(`/prompt/quiz`);
-    }
-    else{
-      hideLoader();
-      setError("Server is down, Please try again later");
-      await delay(6000);
-      setError("");
-    }
-    
+    // showLoader();
+    // const response = await fetch("http://localhost:8000/quiz", {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+    // if(response.ok){
+    //   const data = await response.json();
+    //   const parsedQuiz = JSON.parse(data.quiz);
+    //   const limitedQuiz = parsedQuiz.slice(0,10);
+    //   await setQuiz(limitedQuiz);
+    //   hideLoader();
+    //   navigate(`/prompt/quiz`);
+    // }
+    // else{
+    //   hideLoader();
+    //   setError("Server is down, Please try again later");
+    //   await delay(6000);
+    //   setError("");
+    // }
+    navigate(`/prompt/quiz`);
   };
 
   const hasAns = answer && answer.length > 0;
