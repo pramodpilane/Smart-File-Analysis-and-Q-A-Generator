@@ -44,14 +44,21 @@ const Header = () => {
   const [binFolderHasFiles, setBinFolderHasFiles] = React.useState(false);
 
   React.useEffect(() => {
-    fetch("http://localhost:8000/check_bin_folder")
-      .then((response) => response.json())
-      .then((data) => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://localhost:8000/check_bin_folder", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+        const data = await response.json();
         setBinFolderHasFiles(data.bin_folder_has_files);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+    fetchData();
   }, []);
 
     return (
