@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Radio from "@mui/material/Radio";
 import { useNavigate } from "react-router-dom";
 import CustomAlert from "../assets/components/Alert";
+import LoaderPage from "../assets/components/LoaderPage";
 
 const styles = {
   root: {
@@ -48,6 +49,7 @@ function Quiz() {
 
   useEffect(() => {
     async function fetchData() {
+      
       try {
         const response = await fetch("http://localhost:8000/quiz", {
         method: "GET",
@@ -163,7 +165,7 @@ function Quiz() {
   const moveRight = current + 1 < size;
 
   if (loading) {
-    return <Typography variant="h1" component="h1" sx={{p:5, textAlign:"center"}}>LOADING</Typography>
+    return <LoaderPage text={"quiz"}/>
   }
 
   return (

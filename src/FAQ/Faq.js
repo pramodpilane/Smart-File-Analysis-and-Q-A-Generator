@@ -5,9 +5,11 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Box } from '@mui/material';
+import LoaderPage from "../assets/components/LoaderPage";
 
 const Faq = () => {
   const [faq, setFaq] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -21,6 +23,7 @@ const Faq = () => {
 
       const data = await response.json();
       setFaq(JSON.parse(data.QnA));
+      setLoading(false);
       } catch (error) {
         console.error('Error fetching suggestion:', error);
       }
@@ -28,6 +31,9 @@ const Faq = () => {
     fetchData();
   }, []);
 
+  if (loading) {
+    return <LoaderPage text={"questions and answers"}/>
+  }
   return (
     <>
       <Typography sx={{ textAlign: "center", paddingTop: "100px", textTransform: "uppercase", fontWeight: "700"}} variant="h4" contained="h4">Questions & Answers</Typography>

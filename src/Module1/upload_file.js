@@ -72,7 +72,7 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
         {hasFiles && (
           <div style={{paddingTop:"30px"}}></div>
         )}
-        {!hasFiles && (
+        {(
           <img
             src={logo1}
             alt="logo"
@@ -80,7 +80,7 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
           />
         )}
         <Grid item xs={3} >
-        <CustomTypography variant="h3" text="SMART FILE ANALYSIS" sx={{mt:2}}/>
+        {/* <CustomTypography variant="h3" text="SMART FILE ANALYSIS" sx={{mt:2}}/> */}
         </Grid>
         {/* Grid item: Upload file */}
         <Grid item xs={3}>
