@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import CustomAlert from "../assets/components/Alert";
 import { useNavigate } from "react-router-dom";
 import CustomTypography from "../assets/components/Typography";
-import { ShimmerThumbnail } from "react-shimmer-effects";
+import { ShimmerThumbnail, ShimmerTitle } from "react-shimmer-effects";
 
 const Module2 = () => {
   // State variables for the input field and error handling
@@ -20,26 +20,31 @@ const Module2 = () => {
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sugesstionLoading, setSuggestionLoading] = useState(false);
   const [suggestion, setSuggestion] = React.useState();
   const navigate = useNavigate();
   const timer = React.useRef();
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch("http://localhost:8000/suggest", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        });
-        const data = await response.json();
-        setSuggestion(data.suggestion);
-      } catch (error) {
-        console.error('Error fetching suggestion:', error);
-      }
+  async function fetchSuggestionData() {
+    try {
+      handleSuggestionLoader();
+      const response = await fetch("http://localhost:8000/suggest", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+      const data = await response.json();
+      setSuggestion(data.suggestion);
+      setSuggestionLoading(false);
+    } catch (error) {
+      console.error('Error fetching suggestion:', error);
     }
-    fetchData();
+  }
+
+  useEffect(() => {
+   console.log("suggestion effect")
+    fetchSuggestionData();
   }, []);
 
   // Styled component for the suggestion items
@@ -61,6 +66,12 @@ const Module2 = () => {
     }
   };
 
+  const handleSuggestionLoader = () => {
+    if (!sugesstionLoading) {
+      setSuggestionLoading(true);
+    }
+  };
+
   // Styles for the container
   const myStyle = {
     display: "flex",
@@ -71,11 +82,14 @@ const Module2 = () => {
     paddingTop: "70px",
   };
 
-  const StyleSheet = {
+  const styles = {
    
-    box: {
-      width: "100%",
-      height: "300px",
+    shimmer: {
+      width: "90%",
+      margin:"10px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
     }
   };
 
@@ -236,37 +250,42 @@ const Module2 = () => {
         <Grid item xs={9}>
           {/* Theme provider for light mode */}
           <ThemeProvider theme={lightTheme}>
-            <Box
-              sx={{
-                p: 2,
-                borderRadius: 2,
-                bgcolor: "background.default",
-                display: "grid",
-                gridTemplateColumns: { md: "1fr 1fr" },
-                gap: 8,
-              }}
-            >
-              {/* Suggestions */}
+          <Box
+  sx={{
+    p: 2,
+    borderRadius: 2,
+    bgcolor: "background.default",
+    display: "grid",
+    gridTemplateColumns: { md: "1fr 1fr" },
+    gap: 8,
+    alignItems: "center", // Center items vertically
+    position: "relative", // Ensure the container has relative positioning
+  }}
+>
+  <Item elevation={10} onClick={generateQuiz}>
+    <b style={{ textTransform: "uppercase" }}>DEVELOP A QUIZ</b>
+  </Item>
+  <Item elevation={10} onClick={generateQA}>
+    <b style={{ textTransform: "uppercase" }}>Questions & Answers</b>
+  </Item>
+  <Item elevation={10} onClick={handleDescriptionClick} style={{ position: "relative" }}>
+    {(suggestion === undefined) && sugesstionLoading && (
+      <ShimmerTitle
+        line={1}
+        variant="primary"
+        className={styles.shimmer}
+        style={{ position: "absolute", marginLeft: "-50%", marginTop: "-50%" }}
+      />
+    )}
+    {suggestion !== undefined && (
+      <b style={{ textTransform: "uppercase" }}>{`Describe about ${suggestion}`}</b>
+    )}
+  </Item>
+  <Item elevation={10} onClick={handleKeyClick}>
+    <b style={{ textTransform: "uppercase" }}>KEYWORDS & KEYPOINTS</b>
+  </Item>
+</Box>
 
-              <Item elevation={10} onClick={generateQuiz}>
-                <b style={{ textTransform: "uppercase" }}>DEVELOP A QUIZ</b>
-              </Item>
-              <Item elevation={10} onClick={generateQA}>
-                <b style={{ textTransform: "uppercase" }}>
-                  Questions & Answers
-                </b>
-              </Item>
-              <Item elevation={10} onClick={handleDescriptionClick}>
-                <b style={{ textTransform: "uppercase" }}>
-                  Describe about {suggestion}
-                </b>
-              </Item>
-              <Item elevation={10} onClick={handleKeyClick}>
-                <b style={{ textTransform: "uppercase" }}>
-                  KEYWORDS & KEYPOINTS
-                </b>
-              </Item>
-            </Box>
           </ThemeProvider>
         </Grid>
       </Grid>
