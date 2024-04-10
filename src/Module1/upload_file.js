@@ -1,5 +1,5 @@
 //importing react essentials
-import React, {useEffect} from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 //importing images from assets
 import logo1 from "../assets/images/OIG4.jpeg";
@@ -8,12 +8,14 @@ import CustomTypography from '../assets/components/Typography';
 import SubmitButton from '../assets/components/Buttons';
 import UploadButton from '../assets/components/UploadButton';
 import DeleteIconButton from '../assets/components/Icons';
+import CustomAlert from "../assets/components/Alert";
 //importing mui styles
 import DescriptionIcon from "@mui/icons-material/Description";
 import { styled } from "@mui/material/styles";
 import {
   Paper,
   Box,
+  Button,
   Grid,
   List,
   ListItem,
@@ -32,6 +34,7 @@ const Demo = styled("div")(({ theme }) => ({
 
 export default function Upload_file({selectedFiles, setSelectedFiles}) {
   const dense = false;
+  const [warning, setWarning] = React.useState();
   const navigate = useNavigate();
 
   const uploadFile = async () => {
@@ -48,9 +51,25 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
     navigate(`/prompt`);
   };
 
-  const uploadHandler = (e) => {
+  async function delay(delayInms) {
+    return new Promise(resolve  => {
+      setTimeout(() => {
+        resolve(2);
+      }, delayInms);
+    });
+  }
+
+  const uploadHandler = async(e) => {
     const files = Array.from(e.target.files);
-    setSelectedFiles([...selectedFiles, ...files]);
+    const uniqueFiles = files.filter(file => !selectedFiles.some(selectedFile => selectedFile.name === file.name));
+    const remainingSpace = 5 - selectedFiles.length;
+    const filesToUpload = uniqueFiles.slice(0, remainingSpace);
+    setSelectedFiles([...selectedFiles, ...filesToUpload]);
+    if (selectedFiles.length + uniqueFiles.length > 5) {
+      setWarning('You can only upload up to 5 files');
+      await delay(6000);
+      setWarning("");
+    } 
   };
 
   const deleteFile = (filename) => {
@@ -69,6 +88,7 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
         justifyContent="center"
         sx={{ minHeight: "70vh", paddingTop: "70px", pb: 10 }}
       >
+        {warning && <CustomAlert severe="warning" msg={`WARNING: ${warning}`} />}
         {hasFiles && (
           <div style={{paddingTop:"30px"}}></div>
         )}
@@ -113,6 +133,7 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
         )}
           
           <Demo>
+          <div style={{ maxHeight: '250px', overflow: 'auto' }}>
             <List dense={dense} sx={{m:1}}>
               {hasFiles &&
                 selectedFiles.map((file) => (
@@ -134,9 +155,14 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
                   </>
                 ))}
             </List>
+          </div>
           </Demo>
         </Grid>
-
+        {hasFiles && (
+          <Button variant="outlined" color="error" onClick={()=>setSelectedFiles([])}>
+          CLEAR ALL FILES
+          </Button>
+        )}
         {/* Submit bttn */}
         {hasFiles && (
           <SubmitButton size="large" variant="contained" onClick={uploadFile}>

@@ -101,7 +101,7 @@ function Quiz() {
       const answer = question[3];
       console.log("answer: ", answer);
       console.log("selectedRef: ", selectedValue);
-      if(answer==selectedValue )
+      if(answer===selectedValue )
       {
         UpdateCounter(counter + 1);
       }

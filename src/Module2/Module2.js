@@ -23,7 +23,6 @@ const Module2 = () => {
   const [sugesstionLoading, setSuggestionLoading] = useState(false);
   const [suggestion, setSuggestion] = React.useState();
   const navigate = useNavigate();
-  const timer = React.useRef();
 
   async function fetchSuggestionData() {
     try {
@@ -311,6 +310,10 @@ const Module2 = () => {
           onChange={(e) => {
             setQuestion(e.target.value);
             setError("");
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter")
+              submitQuestion();
           }}
         />
         {/* Button to submit question */}

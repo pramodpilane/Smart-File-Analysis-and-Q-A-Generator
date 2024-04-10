@@ -1,13 +1,8 @@
 import * as React from 'react';
 import { Link } from "react-router-dom";
-import logo1 from '../assets/images/OIG4.jpeg'
-import Badge from '@mui/joy/Badge';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
 import Sheet from '@mui/joy/Sheet';
-import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
 import Typography from '@mui/material/Typography';
-import zIndex from '@mui/material/styles/zIndex';
 
 // Define styles object
 const styles = {
