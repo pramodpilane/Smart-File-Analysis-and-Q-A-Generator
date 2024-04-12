@@ -33,8 +33,10 @@ function Quiz() {
   const [quiz,setQuiz] = useState([]);
   const [current, setCurrent] = useState(0);
   const [counter, UpdateCounter] = useState(0);
+  const [attemptedCounter, UpdateAttemptedCounter] = useState(0);
   const [selectedValue, setSelectedValue] = useState("");
   const [isAnswerSubmitted, setisAnswerSubmitted] = useState(false);
+  const [isFinish, setisFinish] = useState(false);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = useState("");
   const [severity, setSeverity] = useState("");
@@ -81,6 +83,7 @@ function Quiz() {
    
     if(isAnswerSubmitted){
       setisAnswerSubmitted(false);
+      UpdateAttemptedCounter(attemptedCounter + 1);
       setCurrent(current + 1);
       setSelectedValue("");
     }
@@ -93,16 +96,29 @@ function Quiz() {
   };
 
   const handleConfirmation = (choice) => {
-    if (choice === "OK") {
+    if (choice === "OK" && isFinish) {
+      setError("");
+      navigate(`/prompt/quiz/quizResult`,{ state: { attempted: attemptedCounter, scored: counter, total: size } });
+    }
+    else if (choice === "OK" ) {
       setError("");
       setCurrent(current + 1);
       setSelectedValue("");
     }
-    setConfirmation(""); // Clearing confirmation state
+    setConfirmation(""); // Clearing confirmation state1
   };
 
-  const finish = () => {
-    navigate(`/prompt/quiz/quizResult`,{ state: { scored: counter, total: size } });
+  const finish = async() => {
+    if(isAnswerSubmitted){
+      navigate(`/prompt/quiz/quizResult`,{ state: { attempted: attemptedCounter, scored: counter, total: size } });
+    }
+    else{
+      setisFinish(true);
+      setError("Warning: You haven't submitted your answer. Click on 'OK' to continue to next question.");
+      setSeverity("warning");
+      await delay(6000);
+      setError("");
+    }
   };
 
   const revealCorrect = async () => {
@@ -231,7 +247,7 @@ function Quiz() {
             >
               Next
             </Button>
-          ) : isAnswerSubmitted && (
+          ) : (
             <Button
               variant="contained"
               color="primary"
