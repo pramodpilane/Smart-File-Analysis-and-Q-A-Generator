@@ -2,12 +2,9 @@ import React from 'react'
 import { Link, useLocation } from "react-router-dom";
 import CustomTypography from '../assets/components/Typography';
 import { Box } from '@mui/material';
-import { useNavigate } from "react-router-dom";
-import SubmitButton from '../assets/components/Buttons';
 
 export default function QuizResult() {
     const {state} = useLocation();
-    const navigate = useNavigate();
     const { scored, total } = state;
   return (
     <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh"}}>

@@ -22,7 +22,9 @@ const Faq = () => {
       });
 
       const data = await response.json();
-      setFaq(JSON.parse(data.QnA));
+      const parsedFaq = JSON.parse(data.QnA);
+      const limitedFaq = parsedFaq.slice(0,10);
+      setFaq(limitedFaq);
       setLoading(false);
       } catch (error) {
         console.error('Error fetching suggestion:', error);

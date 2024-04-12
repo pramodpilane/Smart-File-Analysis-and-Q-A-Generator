@@ -1,7 +1,7 @@
 // SubmitButton.js
 
-import React, { useState, useEffect } from "react";
-import { Box, Button, CircularProgress } from "@mui/material";
+import React, { useState} from "react";
+import { Button, CircularProgress } from "@mui/material";
 import { styled } from "@mui/system";
 import Link from '@mui/joy/Link';
 

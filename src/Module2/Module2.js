@@ -345,6 +345,10 @@ const Module2 = () => {
             setQuestion(e.target.value);
             setError("");
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter")
+              submitQuestion();
+          }}
         />
         {/* Button to submit question */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
