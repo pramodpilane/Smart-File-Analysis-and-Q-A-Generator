@@ -37,6 +37,8 @@ function Quiz() {
   const [isAnswerSubmitted, setisAnswerSubmitted] = useState(false);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = useState("");
+  const [severity, setSeverity] = useState("");
+  const [confirmation, setConfirmation] = useState("");
   const navigate = useNavigate();
   
   async function delay(delayInms) {
@@ -76,17 +78,27 @@ function Quiz() {
   };
 
   const moveNext = async() => {
+   
     if(isAnswerSubmitted){
       setisAnswerSubmitted(false);
       setCurrent(current + 1);
       setSelectedValue("");
     }
     else{
-      setError("please submit before proceeding");
+      setError("Warning: You haven't submitted your answer. Click on 'OK' to continue to next question.");
+      setSeverity("warning");
       await delay(6000);
       setError("");
     }
-    
+  };
+
+  const handleConfirmation = (choice) => {
+    if (choice === "OK") {
+      setError("");
+      setCurrent(current + 1);
+      setSelectedValue("");
+    }
+    setConfirmation(""); // Clearing confirmation state
   };
 
   const finish = () => {
@@ -107,13 +119,15 @@ function Quiz() {
       }
     }
     else{
-      setError("please select your answer before submitting");
+      setError("ERROR: Please select your answer before submitting");
+      setSeverity("error");
       await delay(6000);
       setError("");
     }
     }
     else{
-      setError("Answer has been submitted, please click on next");
+      setError("ERROR: Answer has been submitted, please click on 'Next' ");
+      setSeverity("error");
       await delay(6000);
       setError("");
     }
@@ -179,7 +193,13 @@ function Quiz() {
         paddingTop: "80px"
       }}
     >
-      {error && <CustomAlert severe="error" msg={`ERROR: ${error}`} />}
+  {error && (
+  <CustomAlert
+    severe={severity}
+    msg={` ${error}`}
+    setConfirmation={handleConfirmation}
+  />
+)}
       <Paper style={styles.root} elevation={4}>
         <Typography component="p">
           <Button variant="contained" color="primary" style={styles.button}>

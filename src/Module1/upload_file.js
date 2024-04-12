@@ -1,13 +1,14 @@
 //importing react essentials
-import React, {useEffect} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 //importing images from assets
 import logo1 from "../assets/images/OIG4.jpeg";
 //importing components
-import CustomTypography from '../assets/components/Typography';
-import SubmitButton from '../assets/components/Buttons';
-import UploadButton from '../assets/components/UploadButton';
-import DeleteIconButton from '../assets/components/Icons';
+import CustomTypography from "../assets/components/Typography";
+import SubmitButton from "../assets/components/Buttons";
+import UploadButton from "../assets/components/UploadButton";
+import DeleteIconButton from "../assets/components/Icons";
+import CustomAlert from "../assets/components/Alert";
 //importing mui styles
 import DescriptionIcon from "@mui/icons-material/Description";
 import { styled } from "@mui/material/styles";
@@ -22,19 +23,21 @@ import {
   ListItemAvatar,
   Divider,
 } from "@mui/material";
-
+import FilesSVG from "../assets/images/FileSVG";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   width: "40em",
 }));
 
-
-export default function Upload_file({selectedFiles, setSelectedFiles}) {
+export default function Upload_file({ selectedFiles, setSelectedFiles }) {
   const dense = false;
+  const [success, setSuccess] = useState(false);
+  const [isSubmitProcess, setSubmitProcess] = useState(false);
   const navigate = useNavigate();
 
   const uploadFile = async () => {
+    setSubmitProcess(true);
     const formData = new FormData();
     selectedFiles.forEach((file) => {
       formData.append("files", file);
@@ -45,7 +48,13 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
       body: formData,
     });
 
-    navigate(`/prompt`);
+    setSuccess(true);
+
+    setTimeout(() => {
+      setSubmitProcess(false);
+      setSuccess(false);
+      navigate(`/prompt`);
+    }, 3000);
   };
 
   const uploadHandler = (e) => {
@@ -61,6 +70,12 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
 
   return (
     <>
+      {success && (
+        <CustomAlert
+          severe="success"
+          msg={`Files are uploaded successfully `}
+        />
+      )}
       <Grid
         container
         spacing={0}
@@ -69,18 +84,16 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
         justifyContent="center"
         sx={{ minHeight: "70vh", paddingTop: "70px", pb: 10 }}
       >
-        {hasFiles && (
-          <div style={{paddingTop:"30px"}}></div>
-        )}
-        {(
+        {hasFiles && <div style={{ paddingTop: "30px" }}></div>}
+        {
           <img
             src={logo1}
             alt="logo"
             style={{ height: "200px", width: "200px", cursor: "pointer" }}
           />
-        )}
-        <Grid item xs={3} >
-        {/* <CustomTypography variant="h3" text="SMART FILE ANALYSIS" sx={{mt:2}}/> */}
+        }
+        <Grid item xs={3}>
+          {/* <CustomTypography variant="h3" text="SMART FILE ANALYSIS" sx={{mt:2}}/> */}
         </Grid>
         {/* Grid item: Upload file */}
         <Grid item xs={3}>
@@ -96,41 +109,54 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
               gap={4}
               p={4}
             >
-              <UploadButton action= {uploadHandler} />
-              <CustomTypography variant="h6" text ="Supported Files" />
-              <CustomTypography variant="body2" text = "PDF, DOCX"  />
-             
+              <FilesSVG />
+              <UploadButton
+                action={uploadHandler}
+                isDisabled={isSubmitProcess}
+              />
+              <CustomTypography variant="h6" text="Supported Files" />
+              <CustomTypography variant="body2" text="PDF, DOCX" />
             </Box>
           </Paper>
         </Grid>
         {/* table */}
         {!hasFiles && (
-          <CustomTypography text="NOTE: Please select a file to proceed further" style={{ textAlign: "center" }} />
+          <CustomTypography
+            text="NOTE: Please select a file to proceed further"
+            style={{ textAlign: "center" }}
+          />
         )}
         <Grid item xs={12} md={7}>
-        {hasFiles && (
-          <CustomTypography text="Uploaded Files" variant="h6" style={{  mt: 8, mb: 1 }} component="div"/>
-        )}
-          
+          {hasFiles && (
+            <CustomTypography
+              text="Uploaded Files"
+              variant="h6"
+              style={{ mt: 8, mb: 1 }}
+              component="div"
+            />
+          )}
+
           <Demo>
-            <List dense={dense} sx={{m:1}}>
+            <List dense={dense} sx={{ m: 1 }}>
               {hasFiles &&
                 selectedFiles.map((file) => (
                   <>
-                  <Divider component="li" />
-                  <ListItem
-                    secondaryAction={
-                      <DeleteIconButton action = {() => deleteFile(file.name)} />
-                    }
-                  >
-                    <ListItemAvatar>
-                      <Avatar>
-                        <DescriptionIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={file.name} />
-                  </ListItem>
-                  <Divider component="li" />
+                    <Divider component="li" />
+                    <ListItem
+                      secondaryAction={
+                        <DeleteIconButton
+                          action={() => deleteFile(file.name)}
+                        />
+                      }
+                    >
+                      <ListItemAvatar>
+                        <Avatar>
+                          <DescriptionIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={file.name} />
+                    </ListItem>
+                    <Divider component="li" />
                   </>
                 ))}
             </List>
@@ -138,10 +164,11 @@ export default function Upload_file({selectedFiles, setSelectedFiles}) {
         </Grid>
 
         {/* Submit bttn */}
+          
         {hasFiles && (
           <SubmitButton size="large" variant="contained" onClick={uploadFile}>
-          SUBMIT
-        </SubmitButton>
+            SUBMIT
+          </SubmitButton>
         )}
       </Grid>
     </>

@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import { createTheme, ThemeProvider} from "@mui/material/styles";
 import CustomAlert from "../assets/components/Alert";
 import { useNavigate } from "react-router-dom";
 import CustomTypography from "../assets/components/Typography";
@@ -23,7 +23,6 @@ const Module2 = () => {
   const [sugesstionLoading, setSuggestionLoading] = useState(false);
   const [suggestion, setSuggestion] = React.useState();
   const navigate = useNavigate();
-  const timer = React.useRef();
 
   async function fetchSuggestionData() {
     try {
@@ -32,30 +31,22 @@ const Module2 = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       });
       const data = await response.json();
       setSuggestion(data.suggestion);
       setSuggestionLoading(false);
     } catch (error) {
-      console.error('Error fetching suggestion:', error);
+      console.error("Error fetching suggestion:", error);
     }
   }
 
   useEffect(() => {
-   console.log("suggestion effect")
+    console.log("suggestion effect");
     fetchSuggestionData();
   }, []);
 
-  // Styled component for the suggestion items
-  const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-    height: 100,
-    lineHeight: "100px",
-    cursor: "pointer",
-  }));
+ 
 
   // Theme for the light mode
   const lightTheme = createTheme({ palette: { mode: "light" } });
@@ -73,28 +64,57 @@ const Module2 = () => {
   };
 
   // Styles for the container
-  const myStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignContent: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: "70px",
-  };
+  
 
   const styles = {
-   
+    container:{
+      display: "flex",
+      flexDirection: "column",
+      alignContent: "center",
+      justifyContent: "center",
+      alignItems: "center",
+      paddingTop: "70px",
+      paddingBottom: "70px"
+    },
     shimmer: {
       width: "90%",
-      margin:"10px",
+      margin: "10px",
       display: "flex",
       justifyContent: "center",
-      alignItems: "center"
-    }
+      alignItems: "center",
+    },
+    suggestion: {
+      height: "100px",
+      padding: "20px",
+      position: "relative",
+      transition: "transform 0.2s ease, box-shadow 0.2s ease", // Add transition for smooth hover effect
+      "&:hover": {
+        transform: "translateY(-5px)", // Move the paper slightly upwards on hover
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", // Add subtle elevation on hover
+        cursor: "pointer", // Change cursor to pointer on hover
+      },
+    },
+    buttonContainer: {
+      position: "absolute",
+      bottom: "10px",
+      right: "10px",
+    },
+
+    suggestionButton: {
+      minHeight: "10px",
+      color: "white",
+      bgcolor: "white",
+      padding: "5",
+      boxShadow: "none",
+      "&:hover": {
+        boxShadow: "none",
+        bgcolor: "white",
+      },
+    },
   };
 
   async function delay(delayInms) {
-    return new Promise(resolve  => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve(2);
       }, delayInms);
@@ -103,7 +123,6 @@ const Module2 = () => {
 
   // Function to handle submission of question
   const submitQuestion = async () => {
-  
     if (!question.trim()) {
       setError("please enter a question before proceeding");
       await delay(6000);
@@ -157,85 +176,45 @@ const Module2 = () => {
   };
 
   const generateQA = async () => {
-  //   showLoader();
-  //   const response = await fetch("http://localhost:8000/faq", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   console.log(response.ok);
-  //   if(response.ok){
-  //   try {
-  //     const data = await response.json();
-  //     console.log(data)
-  //     await setFaq(JSON.parse(data.QnA));
-  //     hideLoader();
-  //     navigate(`/prompt/faq`);
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-  // else{
-  //   hideLoader();
-  //   setError("Server is down, Please try again later");
-  //   await delay(6000);
-  //   setError("");
-  // }
-  navigate(`/prompt/faq`);
+   
+    navigate(`/prompt/faq`);
   };
 
   const generateQuiz = async () => {
-    // showLoader();
-    // const response = await fetch("http://localhost:8000/quiz", {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // if(response.ok){
-    //   const data = await response.json();
-    //   const parsedQuiz = JSON.parse(data.quiz);
-    //   const limitedQuiz = parsedQuiz.slice(0,10);
-    //   await setQuiz(limitedQuiz);
-    //   hideLoader();
-    //   navigate(`/prompt/quiz`);
-    // }
-    // else{
-    //   hideLoader();
-    //   setError("Server is down, Please try again later");
-    //   await delay(6000);
-    //   setError("");
-    // }
+
     navigate(`/prompt/quiz`);
   };
 
   const hasAns = answer && answer.length > 0;
 
   // Replace line breaks with <br> tags, add extra line break before "KEY POINTS", and **KEYWORDS** with bolded text
-  const formattedAnswer = answer.split('\n')
-    .map((line, index) => (
-      <React.Fragment key={index}>
-        {line.includes("KEY POINTS") && <br />} {/* Add extra line break before "KEY POINTS" */}
-        <span dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
-        <br />
-      </React.Fragment>
-    ));
-  
+  const formattedAnswer = answer.split("\n").map((line, index) => (
+    <React.Fragment key={index}>
+      {line.includes("KEY POINTS") && <br />}{" "}
+      {/* Add extra line break before "KEY POINTS" */}
+      <span
+        dangerouslySetInnerHTML={{
+          __html: line.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>"),
+        }}
+      />
+      <br />
+    </React.Fragment>
+  ));
+
   return (
-    <div style={myStyle}>
+    <div style={styles.container}>
       {/* Display error if input field is empty & submit button is clicked */}
       {error && <CustomAlert severe="error" msg={`ERROR: ${error}`} />}
-      {!hasAns && (
-        <>
+      
+        
           <Box />
           <img
             src={logo1}
             alt="logo"
             style={{ height: "200px", width: "200px", cursor: "pointer" }}
           />
-        </>
-      )}
+       
+      
 
       {/* Header */}
       <CustomTypography
@@ -245,50 +224,104 @@ const Module2 = () => {
       />
       <br />
 
-      {/* Suggestions grid */}
       <Grid container display="flex" justifyContent="center" spacing={2}>
         <Grid item xs={9}>
           {/* Theme provider for light mode */}
           <ThemeProvider theme={lightTheme}>
-          <Box
-  sx={{
-    p: 2,
-    borderRadius: 2,
-    bgcolor: "background.default",
-    display: "grid",
-    gridTemplateColumns: { md: "1fr 1fr" },
-    gap: 8,
-    alignItems: "center", // Center items vertically
-    position: "relative", // Ensure the container has relative positioning
-  }}
->
-  <Item elevation={10} onClick={generateQuiz}>
-    <b style={{ textTransform: "uppercase" }}>DEVELOP A QUIZ</b>
-  </Item>
-  <Item elevation={10} onClick={generateQA}>
-    <b style={{ textTransform: "uppercase" }}>Questions & Answers</b>
-  </Item>
-  <Item elevation={10} onClick={handleDescriptionClick} style={{ position: "relative" }}>
-    {(suggestion === undefined) && sugesstionLoading && (
-      <ShimmerTitle
-        line={1}
-        variant="primary"
-        className={styles.shimmer}
-        style={{ position: "absolute", marginLeft: "-50%", marginTop: "-50%" }}
-      />
-    )}
-    {suggestion !== undefined && (
-      <b style={{ textTransform: "uppercase" }}>{`Describe about ${suggestion}`}</b>
-    )}
-  </Item>
-  <Item elevation={10} onClick={handleKeyClick}>
-    <b style={{ textTransform: "uppercase" }}>KEYWORDS & KEYPOINTS</b>
-  </Item>
-</Box>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2,
+                bgcolor: "background.default",
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr 1fr", // Changed to one row and four columns
+                gap: 4, // Adjusted gap to ensure proper spacing
+                alignItems: "start", // Align items at the start of the cross axis
+                position: "relative", // Ensure the container has relative positioning
+              }}
+            >
+              <Paper
+                elevation={10}
+                onClick={generateQuiz}
+                sx={styles.suggestion}
+              >
+                <b>Develop a Personalized Quiz</b>
+                <Box sx={styles.buttonContainer}>
+                  <Button
+                    variant="contained"
+                    sx={styles.suggestionButton}
+                    onClick={submitQuestion}
+                  >
+                    <SendIcon fontSize="medium" padding="0" color="primary" />
+                  </Button>
+                </Box>
+              </Paper>
+              <Paper elevation={10} onClick={generateQA} sx={styles.suggestion}>
+                <b>Questions & Answers</b>
+                <Box sx={styles.buttonContainer}>
+                  <Button
+                    variant="contained"
+                    sx={styles.suggestionButton}
+                    onClick={submitQuestion}
+                  >
+                    <SendIcon fontSize="medium" padding="0" color="primary" />
+                  </Button>
+                </Box>
+              </Paper>
+              <Paper
+                elevation={10}
+                onClick={handleDescriptionClick}
+                sx={styles.suggestion}
+              >
+                {suggestion === undefined && sugesstionLoading && (
+                  <ShimmerTitle
+                    line={1}
+                    variant="primary"
+                    className={styles.shimmer}
+                    style={{
+                      position: "absolute",
+                      marginLeft: "-50%",
+                      marginTop: "-50%",
+                    }}
+                  />
+                )}
+                {suggestion !== undefined && (
+                  <b
+                    style={{ textTransform: "initial" }}
+                  >{`Describe about "${suggestion}"`}</b>
+                )}
+                <Box sx={styles.buttonContainer}>
+                  <Button
+                    variant="contained"
+                    sx={styles.suggestionButton}
+                    onClick={submitQuestion}
+                  >
+                    <SendIcon fontSize="medium" padding="0" color="primary" />
+                  </Button>
+                </Box>
+              </Paper>
+              <Paper
+                elevation={10}
+                onClick={handleKeyClick}
+                sx={styles.suggestion}
+              >
+                <b>Generate Keywords and Keypoints</b>
 
+                <Box sx={styles.buttonContainer}>
+                  <Button
+                    variant="contained"
+                    sx={styles.suggestionButton}
+                    onClick={submitQuestion}
+                  >
+                    <SendIcon fontSize="medium" padding="0" color="primary" />
+                  </Button>
+                </Box>
+              </Paper>
+            </Box>
           </ThemeProvider>
         </Grid>
       </Grid>
+
       <br />
       <br />
       <br />
@@ -303,7 +336,7 @@ const Module2 = () => {
         }}
       >
         <TextField
-          placeholder="ENTER PROMPT"
+          placeholder="ASK A QUESTION..."
           fullWidth
           id="fullWidth"
           focused
@@ -336,7 +369,6 @@ const Module2 = () => {
                 }}
               />
             )}
-          
           </Box>
         </Box>
       </Grid>
@@ -354,59 +386,24 @@ const Module2 = () => {
           <div style={{}}>
             <ShimmerThumbnail height={250} rounded />
           </div>
-        ) : hasAns && (
-          <Box
-      sx={{
-        padding: '15px',
-        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-        borderRadius: '5px',
-        border: '1px solid lightgrey', // Border style
-        whiteSpace: 'pre-line',
-      }}
-    >
-      {formattedAnswer}
-    </Box>  
-        ) }
-        
+        ) : (
+          hasAns && (
+            <Box
+              sx={{
+                padding: "15px",
+                boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+                borderRadius: "5px",
+                border: "1px solid lightgrey", // Border style
+                whiteSpace: "pre-line",
+              }}
+            >
+              {formattedAnswer}
+            </Box>
+          )
+        )}
       </Grid>
     </div>
   );
 };
 
 export default Module2;
-
-
-function showLoader() {
-  // Create pop-up loader element
-  const loader = document.createElement("div");
-  loader.id = "loader";
-  loader.innerHTML = "Loading...<br> Please Wait"; // You can customize the loader message/style
-
-  // Style the loader
-  loader.style.position = "fixed";
-  loader.style.display = "flex";
-  loader.style.justifyContent = "center";
-  loader.style.alignItems = "center";
-  loader.style.fontSize = "2rem";
-  loader.style.top = "50%";
-  loader.style.left = "50%";
-  loader.style.height = "100vh";
-  loader.style.width = "100vw";
-  loader.style.transform = "translate(-50%, -50%)";
-  loader.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  loader.style.color = "#fff";
-  loader.style.padding = "100px";
-  loader.style.borderRadius = "5px";
-  loader.style.zIndex = "9999"; // Ensure it's on top of everything
-
-  // Append loader to the document body
-  document.body.appendChild(loader);
-}
-
-function hideLoader() {
-  // Find and remove the loader element
-  const loader = document.getElementById("loader");
-  if (loader) {
-    loader.parentNode.removeChild(loader);
-  }
-}

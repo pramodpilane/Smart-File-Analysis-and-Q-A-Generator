@@ -18,7 +18,7 @@ export default function QuizResult() {
       <CustomTypography variant="h4" text={`You have scored ${scored}/${total}`}/>
       </Box>
       
-      <Link to={-2} style={{textDecoration:"none", fontSize: "1.2rem", backgroundColor: "blue", padding: "8px 20px", marginTop: "50px", color: "white", fontWeight: "600"}}>Go Back</Link>
+      <Link to={-2} style={{textDecoration:"none", fontSize: "1.2rem", backgroundColor: "#1976D2", padding: "8px 20px", marginTop: "50px", color: "white", fontWeight: "600"}}>Go Back</Link>
     </div>
   )
 }
