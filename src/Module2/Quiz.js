@@ -33,10 +33,14 @@ function Quiz() {
   const [quiz,setQuiz] = useState([]);
   const [current, setCurrent] = useState(0);
   const [counter, UpdateCounter] = useState(0);
+  const [attemptedCounter, UpdateAttemptedCounter] = useState(0);
   const [selectedValue, setSelectedValue] = useState("");
   const [isAnswerSubmitted, setisAnswerSubmitted] = useState(false);
+  const [isFinish, setisFinish] = useState(false);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = useState("");
+  const [severity, setSeverity] = useState("");
+  const [confirmation, setConfirmation] = useState("");
   const navigate = useNavigate();
   
   async function delay(delayInms) {
@@ -76,21 +80,45 @@ function Quiz() {
   };
 
   const moveNext = async() => {
+   
     if(isAnswerSubmitted){
       setisAnswerSubmitted(false);
+      UpdateAttemptedCounter(attemptedCounter + 1);
       setCurrent(current + 1);
       setSelectedValue("");
     }
     else{
-      setError("please submit before proceeding");
+      setError("Warning: You haven't submitted your answer. Click on 'OK' to continue to next question.");
+      setSeverity("warning");
       await delay(6000);
       setError("");
     }
-    
   };
 
-  const finish = () => {
-    navigate(`/prompt/quiz/quizResult`,{ state: { scored: counter, total: size } });
+  const handleConfirmation = (choice) => {
+    if (choice === "OK" && isFinish) {
+      setError("");
+      navigate(`/prompt/quiz/quizResult`,{ state: { attempted: attemptedCounter, scored: counter, total: size } });
+    }
+    else if (choice === "OK" ) {
+      setError("");
+      setCurrent(current + 1);
+      setSelectedValue("");
+    }
+    setConfirmation(""); // Clearing confirmation state1
+  };
+
+  const finish = async() => {
+    if(isAnswerSubmitted){
+      navigate(`/prompt/quiz/quizResult`,{ state: { attempted: attemptedCounter, scored: counter, total: size } });
+    }
+    else{
+      setisFinish(true);
+      setError("Warning: You haven't submitted your answer. Click on 'OK' to continue to next question.");
+      setSeverity("warning");
+      await delay(6000);
+      setError("");
+    }
   };
 
   const revealCorrect = async () => {
@@ -107,13 +135,15 @@ function Quiz() {
       }
     }
     else{
-      setError("please select your answer before submitting");
+      setError("ERROR: Please select your answer before submitting");
+      setSeverity("error");
       await delay(6000);
       setError("");
     }
     }
     else{
-      setError("Answer has been submitted, please click on next");
+      setError("ERROR: Answer has been submitted, please click on 'Next' ");
+      setSeverity("error");
       await delay(6000);
       setError("");
     }
@@ -179,7 +209,13 @@ function Quiz() {
         paddingTop: "80px"
       }}
     >
-      {error && <CustomAlert severe="error" msg={`ERROR: ${error}`} />}
+  {error && (
+  <CustomAlert
+    severe={severity}
+    msg={` ${error}`}
+    setConfirmation={handleConfirmation}
+  />
+)}
       <Paper style={styles.root} elevation={4}>
         <Typography component="p">
           <Button variant="contained" color="primary" style={styles.button}>
@@ -211,7 +247,7 @@ function Quiz() {
             >
               Next
             </Button>
-          ) : isAnswerSubmitted && (
+          ) : (
             <Button
               variant="contained"
               color="primary"
