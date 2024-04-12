@@ -112,7 +112,7 @@ export default function Upload_file({ selectedFiles, setSelectedFiles }) {
             alt="logo"
             style={{ height: "200px", width: "200px", cursor: "pointer" }}
           />
-        }
+        )}
         <Grid item xs={3}>
           {/* <CustomTypography variant="h3" text="SMART FILE ANALYSIS" sx={{mt:2}}/> */}
         </Grid>
