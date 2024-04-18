@@ -33,11 +33,16 @@ const Module2 = () => {
           "Content-Type": "application/json",
         },
       });
-      const data = await response.json();
-      setSuggestion(data.suggestion);
-      setSuggestionLoading(false);
+      if (response.status === 200){
+        const data = await response.json();
+        setSuggestion(data.suggestion);
+        setSuggestionLoading(false);
+      } else {
+        setError("Error fetching suggestion. Please try again....");
+      }
     } catch (error) {
-      console.error("Error fetching suggestion:", error);
+      setError("Sorry, there is some issue with server. Please try again....");
+      console.error("Backend issue:", error);
     }
   }
 
@@ -128,61 +133,75 @@ const Module2 = () => {
       await delay(6000);
       setError("");
     } else {
+      try{
+        handleButtonClick();
+        const response = await fetch("http://localhost:8000/answer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ question }),
+        });
+        if (response.status === 200){
+          const data = await response.json();
+          setLoading(false);
+          setAnswer(data.answer);
+        } else{
+          setError("Error not able to fetch answer. Please try again....");
+        }
+      } catch (error) {
+          setError("Sorry, there is some issue with server. Please try again....");
+          console.error("Backend issue:", error);
+      }      
+    }
+  };
+
+  const handleDescriptionClick = async () => {
+    try{
+      const q = `Describe about ${suggestion}`;
+      setQuestion(q);
       handleButtonClick();
       const response = await fetch("http://localhost:8000/answer", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({ question: q }),
       });
-
-      const data = await response.json();
-      setLoading(false);
-      setAnswer(data.answer);
-    }
-  };
-
-  const handleDescriptionClick = async () => {
-    const q = `Describe about ${suggestion}`;
-    setQuestion(q);
-    handleButtonClick();
-    const response = await fetch("http://localhost:8000/answer", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ question: q }),
-    });
-
-    const data = await response.json();
-    setLoading(false);
-    setAnswer(data.answer);
+      if (response.status === 200){
+        const data = await response.json();
+        setLoading(false);
+        setAnswer(data.answer);
+      } else{
+        setError("Error not able to fetch answer. Please try again....");
+      }
+    } catch (error) {
+        setError("Sorry, there is some issue with server. Please try again....");
+        console.error("Backend issue:", error);
+    } 
   };
 
   const handleKeyClick = async () => {
-    setQuestion("KEYWORDS & KEYPOINTS");
-    handleButtonClick();
-    const response = await fetch("http://localhost:8000/keypw", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-    setLoading(false);
-    setAnswer(data.keyPW);
-  };
-
-  const generateQA = async () => {
-   
-    navigate(`/prompt/faq`);
-  };
-
-  const generateQuiz = async () => {
-
-    navigate(`/prompt/quiz`);
+    try{
+      setQuestion("KEYWORDS & KEYPOINTS");
+      handleButtonClick();
+      const response = await fetch("http://localhost:8000/keypw", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.status === 200){
+        const data = await response.json();
+        setLoading(false);
+        setAnswer(data.keyPW);
+      } else{
+        setError("Error not able to fetch keywords & keypoints. Please try again....");
+      }      
+    } catch (error) {
+        setError("Sorry, there is some issue with server. Please try again....");
+        console.error("Backend issue:", error);
+      }
   };
 
   const hasAns = answer && answer.length > 0;
@@ -242,7 +261,7 @@ const Module2 = () => {
             >
               <Paper
                 elevation={10}
-                onClick={generateQuiz}
+                onClick={() => navigate(`/prompt/quiz`)}
                 sx={styles.suggestion}
               >
                 <b>Develop a Personalized Quiz</b>
@@ -250,19 +269,17 @@ const Module2 = () => {
                   <Button
                     variant="contained"
                     sx={styles.suggestionButton}
-                    onClick={submitQuestion}
                   >
                     <SendIcon fontSize="medium" padding="0" color="primary" />
                   </Button>
                 </Box>
               </Paper>
-              <Paper elevation={10} onClick={generateQA} sx={styles.suggestion}>
+              <Paper elevation={10} onClick={() => navigate(`/prompt/faq`)} sx={styles.suggestion}>
                 <b>Questions & Answers</b>
                 <Box sx={styles.buttonContainer}>
                   <Button
                     variant="contained"
                     sx={styles.suggestionButton}
-                    onClick={submitQuestion}
                   >
                     <SendIcon fontSize="medium" padding="0" color="primary" />
                   </Button>
@@ -294,7 +311,6 @@ const Module2 = () => {
                   <Button
                     variant="contained"
                     sx={styles.suggestionButton}
-                    onClick={submitQuestion}
                   >
                     <SendIcon fontSize="medium" padding="0" color="primary" />
                   </Button>
@@ -311,7 +327,6 @@ const Module2 = () => {
                   <Button
                     variant="contained"
                     sx={styles.suggestionButton}
-                    onClick={submitQuestion}
                   >
                     <SendIcon fontSize="medium" padding="0" color="primary" />
                   </Button>
