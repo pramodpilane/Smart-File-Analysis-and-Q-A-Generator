@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import CustomAlert from "../assets/components/Alert";
 import LoaderPage from "../assets/components/LoaderPage";
 
+
 const styles = {
   root: {
     padding: "16px",
@@ -39,6 +40,7 @@ function Quiz() {
   const [isFinish, setisFinish] = useState(false);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
   const [severity, setSeverity] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const navigate = useNavigate();
@@ -53,7 +55,6 @@ function Quiz() {
 
   useEffect(() => {
     async function fetchData() {
-      
       try {
         const response = await fetch("http://localhost:8000/quiz", {
         method: "GET",
@@ -67,7 +68,9 @@ function Quiz() {
         setQuiz(limitedQuiz);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching suggestion:', error);
+        setServerError(`Sorry, there is some issue with server.`);
+        setLoading(false);
+        console.error("Backend issue:", error);
       }
     }
     fetchData();
@@ -198,70 +201,80 @@ function Quiz() {
     return <LoaderPage text={"quiz"}/>
   }
 
-  return (
-   
-    <Box
-      style={{
-        height: "80vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingTop: "80px"
-      }}
-    >
-  {error && (
-  <CustomAlert
-    severe={severity}
-    msg={` ${error}`}
-    setConfirmation={handleConfirmation}
-  />
-)}
-      <Paper style={styles.root} elevation={4}>
-        <Typography component="p">
-          <Button variant="contained" color="primary" style={styles.button}>
-            <LiveHelpIcon />
-          </Button>
-          <span style={styles.questionMeta}>
-            {" "}
-            Question #{curQuestion} / {size}
-          </span>
-        </Typography>
+  return (<>
+   {serverError ?
+     (<>
+      <Typography sx={{ textAlign: "center", paddingTop: "100px", fontWeight: "500"}} variant="h6" contained="h6">{serverError}</Typography>
+      <Typography sx={{ textAlign: "center", paddingTop: "10px", fontWeight: "500"}} variant="h6" contained="h6">please try again...</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+        <Button variant="outlined" color="error" onClick={() => window.location.reload()}>Try Again</Button>
+      </Box>
+      </>
+     ) :
+     (
+      <Box
+            style={{
+              height: "80vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              paddingTop: "80px"
+            }}
+          >
+        {error && (
+        <CustomAlert
+          severe={severity}
+          msg={` ${error}`}
+          setConfirmation={handleConfirmation}
+        />
+      )}
+            <Paper style={styles.root} elevation={4}>
+              <Typography component="p">
+                <Button variant="contained" color="primary" style={styles.button}>
+                  <LiveHelpIcon />
+                </Button>
+                <span style={styles.questionMeta}>
+                  {" "}
+                  Question #{curQuestion} / {size}
+                </span>
+              </Typography>
 
-        <hr style={{ marginBottom: "20px" }} />
-        <Typography variant="h5" component="h2">
-          {question[1]}
-        </Typography>
+              <hr style={{ marginBottom: "20px" }} />
+              <Typography variant="h5" component="h2">
+                {question[1]}
+              </Typography>
 
-        {renderOptions(question[2])}
+              {renderOptions(question[2])}
 
-        <div style={styles.footer}>
-          <Button onClick={revealCorrect} variant="contained" color="secondary">
-            Submit
-          </Button>
-          {moveRight ? (
-            <Button
-              onClick={moveNext}
-              variant="contained"
-              color="primary"
-              style={{ marginLeft: "10px" }}
-            >
-              Next
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginLeft: "10px" }}
-              onClick={finish}
-            >
-              Finish
-            </Button>
-          )}
+              <div style={styles.footer}>
+                <Button onClick={revealCorrect} variant="contained" color="secondary">
+                  Submit
+                </Button>
+                {moveRight ? (
+                  <Button
+                    onClick={moveNext}
+                    variant="contained"
+                    color="primary"
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Next
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ marginLeft: "10px" }}
+                    onClick={finish}
+                  >
+                    Finish
+                  </Button>
+                )}
 
-        </div>
-      </Paper>
-    </Box>
-
+              </div>
+            </Paper>
+          </Box>
+     )}
+     </>
   );
 }
 
