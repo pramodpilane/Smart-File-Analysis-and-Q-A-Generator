@@ -45,6 +45,7 @@ export default function Upload_file({ selectedFiles, setSelectedFiles }) {
   const [success, setSuccess] = useState(false);
   const [isSubmitProcess, setSubmitProcess] = useState(false);
   const [warning, setWarning] = React.useState();
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
 
@@ -72,24 +73,33 @@ export default function Upload_file({ selectedFiles, setSelectedFiles }) {
   };
 
   const uploadFile = async () => {
-    setSubmitProcess(true);
+    try{
+      setSubmitProcess(true);
     const formData = new FormData();
     selectedFiles.forEach((file) => {
       formData.append("files", file);
     });
 
-    await fetch("http://localhost:8000/upload", {
+    const response = await fetch("http://localhost:8000/upload", {
       method: "POST",
       body: formData,
     });
+    if (response.status === 200) {
+      setSuccess(true);
 
-    setSuccess(true);
-
-    setTimeout(() => {
-      setSubmitProcess(false);
-      setSuccess(false);
-      navigate(`/prompt`);
-    }, 3000);
+      setTimeout(() => {
+        setSubmitProcess(false);
+        setSuccess(false);
+        navigate(`/prompt`);
+      }, 3000);
+    } else {
+      setError("Error uploading files. Please try again....");
+    }
+    }
+    catch(error){
+      setError("Sorry, there is some issue with server. Please try again....");
+      console.error("Upload error:", error);
+    }
   };
 
   async function delay(delayInms) {
@@ -126,6 +136,12 @@ export default function Upload_file({ selectedFiles, setSelectedFiles }) {
 
   return (
     <>
+      {error && (
+        <CustomAlert
+        severe="error"
+        msg={error}
+      />
+      )}
       {success && (
         <CustomAlert
           severe="success"
