@@ -1,9 +1,10 @@
 import * as React from 'react';
 
 import Box from '@mui/joy/Box';
-import IconButton from '@mui/joy/IconButton';
+
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
+import IconButton from '@mui/joy/IconButton';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import GoogleIcon from '@mui/icons-material/Google';

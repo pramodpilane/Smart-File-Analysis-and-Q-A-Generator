@@ -87,13 +87,22 @@ const Header = () => {
               </Box>
             </Link>
           }
-          <Link  style={styles.link}>
+          <Link to="/about" style={styles.link}>
             <Box sx={styles.linkWrapper}>
               <Typography variant="h6" component="div">
                 About
               </Typography>
             </Box>
           </Link>
+
+          <a href="/#how-it-works" style={styles.link}>
+            <Box sx={styles.linkWrapper}>
+              <Typography variant="h6" component="div">
+                How It Works
+              </Typography>
+            </Box>
+          </a>
+
         </Box>
 
       </Sheet>
