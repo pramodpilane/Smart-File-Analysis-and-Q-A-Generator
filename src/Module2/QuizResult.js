@@ -1,11 +1,11 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import CustomTypography from "../assets/components/Typography";
+import CustomTypography from "../assets/components/Typography"; // Import CustomTypography component
 import { Box } from "@mui/material";
 
 export default function QuizResult() {
-  const { state } = useLocation();
-  const { attempted, scored, total } = state;
+  const { state } = useLocation(); // Get state from the location object
+  const { attempted, scored, total } = state; // Destructure state into variables
   return (
     <div
       style={{
@@ -13,9 +13,10 @@ export default function QuizResult() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
+        height: "100vh"
       }}
     >
+      {/* Display success message */}
       <Box>
         <CustomTypography
           variant="h6"
@@ -23,6 +24,8 @@ export default function QuizResult() {
         />
       </Box>
       <br />
+
+      {/* Display attempted questions count if not all questions were attempted */}
       {attempted != total && (
         <>
           <Box>
@@ -35,6 +38,7 @@ export default function QuizResult() {
         </>
       )}
 
+      {/* Display score */}
       <Box>
         <CustomTypography
           variant="h4"
@@ -42,6 +46,7 @@ export default function QuizResult() {
         />
       </Box>
 
+      {/* Link to go back */}
       <Link
         to={-2}
         style={{

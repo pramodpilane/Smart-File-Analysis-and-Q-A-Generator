@@ -1,10 +1,9 @@
-// Uploading Files Button Component.js
-
 import React from "react";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 
+// Styled component for a visually hidden input field
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -17,7 +16,9 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+// UploadButton component definition
 const UploadButton = ({ action, isDisabled = false }) => {
+  // Inline styles for the button
   const styles = {
     button: {
       maxWidth: "50em",
@@ -34,8 +35,11 @@ const UploadButton = ({ action, isDisabled = false }) => {
       style={styles.button}
       startIcon={<CloudUploadIcon style={{ height: "30", width: "30" }} />}
     >
+      {/* Text content of the button */}
       <strong style={{ fontSize: "1.6rem" }}> UPLOAD</strong>
-      {isDisabled? 
+      {/* Conditionally render the VisuallyHiddenInput based on isDisabled */}
+      {isDisabled?
+      // VisuallyHiddenInput for disabled state
       <VisuallyHiddenInput
       type="file"
       multiple
@@ -44,6 +48,7 @@ const UploadButton = ({ action, isDisabled = false }) => {
       disabled
     />
       :
+      // VisuallyHiddenInput for enabled state
       <VisuallyHiddenInput
         type="file"
         multiple
@@ -56,4 +61,5 @@ const UploadButton = ({ action, isDisabled = false }) => {
   );
 };
 
+// Export the UploadButton component
 export default UploadButton;
