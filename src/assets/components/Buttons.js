@@ -1,11 +1,9 @@
-// SubmitButton.js
-
 import React, { useState} from "react";
 import { Button, CircularProgress } from "@mui/material";
 import { styled } from "@mui/system";
 import Link from '@mui/joy/Link';
 
-
+// Styled component for a custom submit button
 const CustomSubmitButton = styled(Button)(({ theme }) => ({
   maxWidth: "40em",
   minWidth: "20em",
@@ -16,6 +14,7 @@ const CustomSubmitButton = styled(Button)(({ theme }) => ({
   marginTop: "3em",
 }));
 
+// Styles for the loader box
 const styles = {
   loaderBox: {
     maxWidth: "40em",
@@ -35,30 +34,30 @@ const styles = {
   }
 }
 
+// SubmitButton component definition
 const SubmitButton = ({ size, variant, onClick, children }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // State to track loading status
  
-
-
+  // Function to handle button click
   const handleClick = async () => {
-    setLoading(true);
+    setLoading(true); // Set loading state to true
     // Perform any asynchronous tasks (e.g., uploading file)
     await onClick(); // Assuming onClick returns a promise
-    setLoading(false);
+    setLoading(false); // Set loading state to false after task completion
   };
 
   return (
     <>
       {loading ? (
+        // Render loader box while loading
         <Link  style = {styles.loaderBox} variant="plain"
         startDecorator={<CircularProgress style={{ color: "white" }} size={24} />}
         sx={{ p: 1 }}>
           <span>Uploading Files...</span>
           <span></span>
-        </Link>
-        
+        </Link> 
       ) : (
-        
+        // Render custom submit button when not loading
         <CustomSubmitButton
           size={size}
           variant={variant}
@@ -66,7 +65,7 @@ const SubmitButton = ({ size, variant, onClick, children }) => {
           disabled={loading}
         >
           
-            {children}
+            {children} {/* Render children inside the button */}
           
         </CustomSubmitButton>
       )}
@@ -74,4 +73,5 @@ const SubmitButton = ({ size, variant, onClick, children }) => {
   );
 };
 
+// Export the SubmitButton component
 export default SubmitButton;
